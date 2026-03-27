@@ -200,14 +200,14 @@ export function Header() {
               >
                 <Menu className="w-6 h-6" />
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] bg-cream border-l border-brand-border">
-                <SheetHeader className="text-left pb-6 border-b border-brand-border">
+              <SheetContent side="right" className="w-[300px] bg-cream border-l border-brand-border flex flex-col h-full">
+                <SheetHeader className="text-left pb-6 border-b border-brand-border flex-shrink-0">
                   <SheetTitle className="font-display text-2xl text-deep-brown">
                     L&L
                   </SheetTitle>
                 </SheetHeader>
 
-                <div className="py-6 space-y-2">
+                <div className="py-6 space-y-2 flex-1 overflow-y-auto">
                   {navLinks.map((link) => (
                     <div key={link.href}>
                       {link.hasDropdown ? (
@@ -253,7 +253,7 @@ export function Header() {
                   ))}
                 </div>
 
-                <div className="pt-6 border-t border-brand-border space-y-4">
+                <div className="pt-6 border-t border-brand-border space-y-4 flex-shrink-0">
                   <LanguageToggle className="w-full justify-center" />
                   <Link
                     href="/contact"
