@@ -1,16 +1,36 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Client for browser usage (limited permissions)
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Lazy initialization to avoid build-time errors
+let _supabase: SupabaseClient | null = null;
+let _supabaseAdmin: SupabaseClient | null = null;
 
-// Admin client for server-side operations (full permissions)
-export const supabaseAdmin = supabaseServiceKey
-  ? createClient(supabaseUrl, supabaseServiceKey)
-  : null;
+function getSupabaseClient(): SupabaseClient | null {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return null;
+  }
+  if (!_supabase) {
+    _supabase = createClient(supabaseUrl, supabaseAnonKey);
+  }
+  return _supabase;
+}
+
+function getSupabaseAdmin(): SupabaseClient | null {
+  if (!supabaseUrl || !supabaseServiceKey) {
+    return null;
+  }
+  if (!_supabaseAdmin) {
+    _supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+  }
+  return _supabaseAdmin;
+}
+
+// Export getters for lazy initialization
+export const supabase = { get: getSupabaseClient };
+export const supabaseAdmin = { get: getSupabaseAdmin };
 
 // Types for our database
 export interface Lead {
@@ -29,12 +49,14 @@ export interface Lead {
 
 // Lead management functions
 export async function insertLead(lead: Omit<Lead, 'id' | 'created_at'>): Promise<{ success: boolean; error?: string }> {
-  if (!supabaseAdmin) {
+  const admin = getSupabaseAdmin();
+
+  if (!admin) {
     console.warn('Supabase admin client not configured - lead not saved to database');
     return { success: true }; // Don't fail if Supabase isn't configured
   }
 
-  const { error } = await supabaseAdmin.from('leads').insert({
+  const { error } = await admin.from('leads').insert({
     first_name: lead.first_name,
     phone: lead.phone,
     email: lead.email || null,
@@ -55,11 +77,13 @@ export async function insertLead(lead: Omit<Lead, 'id' | 'created_at'>): Promise
 }
 
 export async function getLeads(status?: string): Promise<Lead[]> {
-  if (!supabaseAdmin) {
+  const admin = getSupabaseAdmin();
+
+  if (!admin) {
     return [];
   }
 
-  let query = supabaseAdmin
+  let query = admin
     .from('leads')
     .select('*')
     .order('created_at', { ascending: false });
@@ -79,11 +103,13 @@ export async function getLeads(status?: string): Promise<Lead[]> {
 }
 
 export async function updateLeadStatus(id: string, status: string): Promise<boolean> {
-  if (!supabaseAdmin) {
+  const admin = getSupabaseAdmin();
+
+  if (!admin) {
     return false;
   }
 
-  const { error } = await supabaseAdmin
+  const { error } = await admin
     .from('leads')
     .update({ status })
     .eq('id', id);
