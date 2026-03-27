@@ -2,10 +2,63 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { memo, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { TrustBar } from '@/components/shared/TrustBar';
+
+// Memoized video background to prevent re-renders on language change
+const VideoBackground = memo(function VideoBackground() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Ensure video plays on mount and after any visibility changes
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const playVideo = () => {
+      if (video.paused) {
+        video.play().catch(() => {
+          // Autoplay may be blocked, that's ok
+        });
+      }
+    };
+
+    // Play on mount
+    playVideo();
+
+    // Re-play when page becomes visible again
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        playVideo();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Also listen for any focus events that might pause the video
+    window.addEventListener('focus', playVideo);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', playVideo);
+    };
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      autoPlay
+      muted
+      loop
+      playsInline
+      className="absolute inset-0 w-full h-full object-cover"
+    >
+      <source src="/videos/hero-bg.mp4" type="video/mp4" />
+    </video>
+  );
+});
 
 // Animation variants
 const fadeIn = {
@@ -46,16 +99,8 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Video */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src="/videos/hero-bg.mp4" type="video/mp4" />
-      </video>
+      {/* Background Video - Memoized to prevent re-renders on language change */}
+      <VideoBackground />
 
       {/* Warm brand overlay - Desktop */}
       <div className="absolute inset-0 bg-gradient-to-r from-dark-footer/85 via-deep-brown/60 to-deep-brown/20 pointer-events-none hidden md:block" />
