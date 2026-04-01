@@ -33,7 +33,7 @@ const faqData = {
     {
       question: 'Can I buy a house without a Social Security number in Texas?',
       answer:
-        'Yes, you can buy a house in Texas without a Social Security number. ITIN loans are specifically designed for immigrants and non-citizens who have an Individual Taxpayer Identification Number (ITIN) instead of an SSN. Daisy specializes in helping Houston families navigate this process.',
+        'Yes, you can buy a house in Texas without a Social Security number. ITIN loans are specifically designed for individuals who have an Individual Taxpayer Identification Number (ITIN) instead of an SSN. Daisy specializes in helping Houston families navigate this process.',
     },
     {
       question: 'What is an ITIN and how do I get one?',
@@ -85,7 +85,7 @@ const faqData = {
     {
       question: '¿Puedo comprar una casa sin número de Seguro Social en Texas?',
       answer:
-        'Sí, puedes comprar una casa en Texas sin número de Seguro Social. Los préstamos ITIN están diseñados específicamente para inmigrantes y no ciudadanos que tienen un Número de Identificación Personal del Contribuyente (ITIN) en lugar de un SSN. Daisy se especializa en ayudar a familias de Houston a navegar este proceso.',
+        'Sí, puedes comprar una casa en Texas sin número de Seguro Social. Los préstamos ITIN están diseñados específicamente para personas que tienen un Número de Identificación Personal del Contribuyente (ITIN) en lugar de un SSN. Daisy se especializa en ayudar a familias de Houston a navegar este proceso.',
     },
     {
       question: '¿Qué es un ITIN y cómo lo obtengo?',
@@ -280,8 +280,8 @@ function JsonLdSchema({ language }: { language: 'en' | 'es' }) {
       name: 'Matador Lending',
     },
     description: language === 'en'
-      ? 'Bilingual mortgage loan officer specializing in ITIN loans for Houston immigrant families.'
-      : 'Oficial de préstamos hipotecarios bilingüe especializada en préstamos ITIN para familias inmigrantes de Houston.',
+      ? 'Bilingual mortgage loan officer specializing in ITIN loans for Houston ITIN borrowers and their families.'
+      : 'Oficial de préstamos hipotecarios bilingüe especializada en préstamos ITIN para prestatarios ITIN y sus familias en Houston.',
     telephone: '832-894-7676',
     email: 'Daisy@matadorlending.com',
     knowsLanguage: ['English', 'Spanish'],
@@ -406,7 +406,7 @@ export function ITINLoansContent() {
                         (ITIN) en lugar de un número de Seguro Social.
                       </p>
                       <p>
-                        Estos préstamos permiten a familias inmigrantes en Houston lograr su sueño de
+                        Estos préstamos permiten a familias con ITIN en Houston lograr su sueño de
                         ser propietarios de una casa, incluso sin estatus de ciudadanía. Daisy se
                         especializa en ayudar a familias como la tuya a navegar este proceso con
                         claridad y confianza.
@@ -420,7 +420,7 @@ export function ITINLoansContent() {
                         Security Number.
                       </p>
                       <p>
-                        These loans allow immigrant families in Houston to achieve their dream of
+                        These loans allow ITIN borrowers and their families in Houston to achieve their dream of
                         homeownership, even without citizenship status. Daisy specializes in helping
                         families like yours navigate this process with clarity and confidence.
                       </p>
@@ -505,7 +505,7 @@ export function ITINLoansContent() {
               {[
                 {
                   icon: Users,
-                  title: isSpanish ? 'Familias Inmigrantes' : 'Immigrant Families',
+                  title: isSpanish ? 'Prestatarios con ITIN' : 'ITIN Borrowers',
                   desc: isSpanish
                     ? 'Individuos con ITINs válidos que pagan impuestos'
                     : 'Individuals with valid ITINs who pay taxes',
@@ -672,8 +672,8 @@ export function ITINLoansContent() {
                       icon: Users,
                       title: isSpanish ? 'Experta en ITIN' : 'ITIN Specialist',
                       desc: isSpanish
-                        ? 'Experiencia extensa ayudando a familias inmigrantes a comprar casas'
-                        : 'Extensive experience helping immigrant families buy homes',
+                        ? 'Experiencia extensa ayudando a prestatarios ITIN y sus familias a comprar casas'
+                        : 'Extensive experience helping ITIN borrowers and their families buy homes',
                     },
                     {
                       icon: Shield,
@@ -721,11 +721,11 @@ export function ITINLoansContent() {
                 </div>
                 <blockquote className="font-cormorant italic text-xl text-deep-brown mb-4">
                   {isSpanish
-                    ? '"Entiendo las esperanzas y desafíos de las familias inmigrantes porque he caminado ese camino. Mi misión es hacer que la propiedad de vivienda sea accesible para todos en Houston."'
-                    : '"I understand the hopes and challenges of immigrant families because I\'ve walked that path. My mission is to make homeownership accessible for everyone in Houston."'}
+                    ? '"Me especializo en ayudar a personas con ITIN a lograr ser dueñas de su hogar. Has trabajado duro y construido una vida aquí — ser dueño de una casa debe ser parte de esa historia. Te guío en cada paso con claridad, paciencia y dedicación."'
+                    : '"I specialize in helping ITIN individuals navigate the path to homeownership. You\'ve worked hard and built a life here — owning a home should be part of that story. I\'ll guide you through every step with clarity, patience, and care."'}
                 </blockquote>
                 <p className="text-text-muted">
-                  — Daisy Castro-Shahin, NMLS #2592627
+                  — Daisy Castro, NMLS #2592627
                 </p>
               </motion.div>
             </div>

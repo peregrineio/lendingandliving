@@ -17,6 +17,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/lib/translations';
 
 // Extended services data
 const services = [
@@ -138,13 +139,51 @@ const services = [
 
 export function ServicesHubContent() {
   const { t, language, isSpanish } = useLanguage();
+  const preApproval = translations[language].preApproval;
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   return (
     <div className="pt-20 md:pt-24">
+      {/* Pre-Approval Banner */}
+      <section className="bg-[#4A3728] border-b-4 border-gold-accent">
+        <div className="section-container py-8 md:py-10">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col md:flex-row items-center justify-between gap-6"
+          >
+            <div className="text-center md:text-left">
+              <h2 className="font-display text-2xl md:text-3xl text-white mb-2">
+                {preApproval.headline}
+              </h2>
+              <p className="text-warm-taupe/80 text-sm md:text-base">
+                {preApproval.sub}
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <Link
+                href="/contact?purpose=pre-approval"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gold-accent text-dark-footer rounded-xl font-semibold hover:bg-gold-accent/90 transition-colors"
+              >
+                {preApproval.apply}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <a
+                href="tel:8328947676"
+                className="inline-flex items-center gap-2 px-6 py-3 border border-white/30 text-white rounded-xl font-semibold hover:bg-white/10 transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                {preApproval.call}
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Hero Banner */}
-      <section className="bg-cream py-16 md:py-20">
+      <section className="bg-cream py-12 md:py-16">
         <div className="section-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -153,7 +192,7 @@ export function ServicesHubContent() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-display-xl text-deep-brown mb-6">
-              {t('services.headline')}
+              {isSpanish ? 'Programas de Préstamos Hipotecarios' : 'Home Loan Programs'}
             </h1>
             <p className="text-lg text-text-muted">
               {isSpanish

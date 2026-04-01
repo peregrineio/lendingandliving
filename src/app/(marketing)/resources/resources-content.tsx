@@ -1,38 +1,88 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { Calculator, Home, DollarSign, Percent, Phone, ArrowRight } from 'lucide-react';
+import { Calculator, Home, DollarSign, Percent, Phone, ArrowRight, Info, MapPin } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/lib/translations';
 
-// Mortgage Payment Calculator
+// Smart default rates for Texas
+const TAX_RATE_DEFAULT = 0.025; // 2.5% of home value annually
+const INSURANCE_RATE_DEFAULT = 0.010; // 1.0% of home value annually
+const HOMESTEAD_REDUCTION = 0.20; // 20% reduction for homestead exemption
+
+// Mortgage Payment Calculator with PITI breakdown
 function MortgageCalculator({ language }: { language: 'en' | 'es' }) {
+  const t = translations[language].calculator;
+
   const [homePrice, setHomePrice] = useState('300000');
-  const [downPayment, setDownPayment] = useState('10500');
+  const [downPaymentDollar, setDownPaymentDollar] = useState('10500');
   const [downPaymentPercent, setDownPaymentPercent] = useState('3.5');
   const [interestRate, setInterestRate] = useState('6.5');
   const [loanTerm, setLoanTerm] = useState('30');
-  const [usePercent, setUsePercent] = useState(true);
+
+  // Toggle states
+  const [showAddressInput, setShowAddressInput] = useState(false);
+  const [applyHomestead, setApplyHomestead] = useState(false);
+  const [propertyAddress, setPropertyAddress] = useState('');
+
+  // Tooltip visibility
+  const [showHomesteadTooltip, setShowHomesteadTooltip] = useState(false);
 
   const price = parseFloat(homePrice.replace(/,/g, '')) || 0;
-  const down = usePercent ? price * (parseFloat(downPaymentPercent) || 0) / 100 : parseFloat(downPayment.replace(/,/g, '')) || 0;
-  const principal = price - down;
+
+  // Sync down payment fields when home price changes
+  useEffect(() => {
+    const pct = parseFloat(downPaymentPercent) || 0;
+    const newDollar = Math.round(price * (pct / 100));
+    setDownPaymentDollar(newDollar.toString());
+  }, [homePrice, downPaymentPercent]);
+
+  // Handle down payment % change
+  const handlePercentChange = (value: string) => {
+    setDownPaymentPercent(value);
+    const pct = parseFloat(value) || 0;
+    const newDollar = Math.round(price * (pct / 100));
+    setDownPaymentDollar(newDollar.toString());
+  };
+
+  // Handle down payment $ change
+  const handleDollarChange = (value: string) => {
+    const cleanValue = value.replace(/[^0-9]/g, '');
+    setDownPaymentDollar(cleanValue);
+    const dollar = parseFloat(cleanValue) || 0;
+    if (price > 0) {
+      const newPct = ((dollar / price) * 100).toFixed(1);
+      setDownPaymentPercent(newPct);
+    }
+  };
+
+  const downPayment = parseFloat(downPaymentDollar.replace(/,/g, '')) || 0;
+  const loanAmount = price - downPayment;
   const monthlyRate = (parseFloat(interestRate) || 0) / 100 / 12;
   const numPayments = (parseInt(loanTerm) || 30) * 12;
 
-  let monthlyPayment = 0;
-  let totalInterest = 0;
-
-  if (monthlyRate > 0 && principal > 0) {
-    monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
-    totalInterest = monthlyPayment * numPayments - principal;
+  // Calculate P&I
+  let monthlyPI = 0;
+  if (monthlyRate > 0 && loanAmount > 0) {
+    monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
   }
+
+  // Calculate taxes and insurance
+  const taxableValue = applyHomestead ? price * (1 - HOMESTEAD_REDUCTION) : price;
+  const monthlyTax = (taxableValue * TAX_RATE_DEFAULT) / 12;
+  const monthlyTaxWithoutHomestead = (price * TAX_RATE_DEFAULT) / 12;
+  const monthlyInsurance = (price * INSURANCE_RATE_DEFAULT) / 12;
+
+  // Total PITI
+  const totalPayment = monthlyPI + monthlyTax + monthlyInsurance;
+  const totalPaymentWithoutHomestead = monthlyPI + monthlyTaxWithoutHomestead + monthlyInsurance;
 
   const formatCurrency = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
 
   return (
-    <div className="bg-cream rounded-2xl p-6">
+    <div id="mortgage-calculator" className="bg-cream rounded-2xl p-6">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 rounded-lg bg-gold-accent/10 flex items-center justify-center">
           <Calculator className="w-5 h-5 text-gold-accent" />
@@ -43,64 +93,209 @@ function MortgageCalculator({ language }: { language: 'en' | 'es' }) {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
+        {/* Inputs Column */}
         <div className="space-y-4">
+          {/* Home Price */}
           <div>
-            <label className="block text-sm font-medium text-deep-brown mb-1">{language === 'es' ? 'Precio de la Casa' : 'Home Price'}</label>
+            <label className="block text-sm font-medium text-deep-brown mb-1">{t.homePrice}</label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
-              <input type="text" value={homePrice} onChange={(e) => setHomePrice(e.target.value.replace(/[^0-9]/g, ''))} className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white" />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-deep-brown mb-1">{language === 'es' ? 'Enganche' : 'Down Payment'}</label>
-            <div className="flex gap-2">
-              <button onClick={() => setUsePercent(true)} className={`px-3 py-1 rounded text-sm ${usePercent ? 'bg-gold-accent text-dark-footer' : 'bg-white border border-brand-border'}`}>%</button>
-              <button onClick={() => setUsePercent(false)} className={`px-3 py-1 rounded text-sm ${!usePercent ? 'bg-gold-accent text-dark-footer' : 'bg-white border border-brand-border'}`}>$</button>
-            </div>
-            <div className="relative mt-2">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">{usePercent ? '%' : '$'}</span>
               <input
                 type="text"
-                value={usePercent ? downPaymentPercent : downPayment}
-                onChange={(e) => usePercent ? setDownPaymentPercent(e.target.value) : setDownPayment(e.target.value.replace(/[^0-9]/g, ''))}
-                className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white"
+                value={homePrice}
+                onChange={(e) => setHomePrice(e.target.value.replace(/[^0-9]/g, ''))}
+                className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white focus:ring-2 focus:ring-gold-accent/50 focus:border-gold-accent outline-none"
               />
             </div>
           </div>
 
+          {/* Down Payment - Two Fields */}
           <div>
-            <label className="block text-sm font-medium text-deep-brown mb-1">{language === 'es' ? 'Tasa de Interés' : 'Interest Rate'}</label>
+            <label className="block text-sm font-medium text-deep-brown mb-1">{t.downPayment}</label>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-sm">%</span>
+                <input
+                  type="text"
+                  value={downPaymentPercent}
+                  onChange={(e) => handlePercentChange(e.target.value)}
+                  className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white focus:ring-2 focus:ring-gold-accent/50 focus:border-gold-accent outline-none"
+                  placeholder="3.5"
+                />
+              </div>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-sm">$</span>
+                <input
+                  type="text"
+                  value={downPaymentDollar}
+                  onChange={(e) => handleDollarChange(e.target.value)}
+                  className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white focus:ring-2 focus:ring-gold-accent/50 focus:border-gold-accent outline-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Interest Rate */}
+          <div>
+            <label className="block text-sm font-medium text-deep-brown mb-1">{t.interestRate}</label>
             <div className="relative">
-              <input type="text" value={interestRate} onChange={(e) => setInterestRate(e.target.value)} className="w-full pl-4 pr-8 py-2 rounded-lg border border-brand-border bg-white" />
+              <input
+                type="text"
+                value={interestRate}
+                onChange={(e) => setInterestRate(e.target.value)}
+                className="w-full pl-4 pr-8 py-2 rounded-lg border border-brand-border bg-white focus:ring-2 focus:ring-gold-accent/50 focus:border-gold-accent outline-none"
+              />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">%</span>
             </div>
           </div>
 
+          {/* Loan Term */}
           <div>
-            <label className="block text-sm font-medium text-deep-brown mb-1">{language === 'es' ? 'Plazo del Préstamo' : 'Loan Term'}</label>
-            <select value={loanTerm} onChange={(e) => setLoanTerm(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-brand-border bg-white">
-              <option value="30">30 {language === 'es' ? 'años' : 'years'}</option>
-              <option value="20">20 {language === 'es' ? 'años' : 'years'}</option>
-              <option value="15">15 {language === 'es' ? 'años' : 'years'}</option>
+            <label className="block text-sm font-medium text-deep-brown mb-1">{t.loanTerm}</label>
+            <select
+              value={loanTerm}
+              onChange={(e) => setLoanTerm(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-brand-border bg-white focus:ring-2 focus:ring-gold-accent/50 focus:border-gold-accent outline-none"
+            >
+              <option value="30">30 {t.years}</option>
+              <option value="20">20 {t.years}</option>
+              <option value="15">15 {t.years}</option>
             </select>
+          </div>
+
+          {/* Toggles */}
+          <div className="space-y-3 pt-2">
+            {/* Homestead Toggle */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-deep-brown">{t.toggleHomestead}</span>
+                <button
+                  onClick={() => setShowHomesteadTooltip(!showHomesteadTooltip)}
+                  className="text-text-muted hover:text-gold-accent"
+                >
+                  <Info className="w-4 h-4" />
+                </button>
+              </div>
+              <button
+                onClick={() => setApplyHomestead(!applyHomestead)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${applyHomestead ? 'bg-gold-accent' : 'bg-gray-300'}`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${applyHomestead ? 'translate-x-6' : 'translate-x-1'}`} />
+              </button>
+            </div>
+            {showHomesteadTooltip && (
+              <div className="text-xs text-text-muted bg-white p-3 rounded-lg border border-brand-border">
+                {t.homesteadTooltip}
+              </div>
+            )}
+
+            {/* Accurate Numbers Toggle */}
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-deep-brown">{t.toggleAccurate}</span>
+              <button
+                onClick={() => setShowAddressInput(!showAddressInput)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showAddressInput ? 'bg-gold-accent' : 'bg-gray-300'}`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showAddressInput ? 'translate-x-6' : 'translate-x-1'}`} />
+              </button>
+            </div>
+
+            {/* Address Input (when toggle is on) */}
+            {showAddressInput && (
+              <div className="space-y-2">
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                  <input
+                    type="text"
+                    value={propertyAddress}
+                    onChange={(e) => setPropertyAddress(e.target.value)}
+                    placeholder={t.addressPlaceholder}
+                    className="w-full pl-10 pr-4 py-2 rounded-lg border border-brand-border bg-white text-sm focus:ring-2 focus:ring-gold-accent/50 focus:border-gold-accent outline-none"
+                  />
+                </div>
+                <p className="text-xs text-text-muted">{t.addressNote}</p>
+                {propertyAddress && (
+                  <Link
+                    href={`/contact?purpose=payment-estimate&address=${encodeURIComponent(propertyAddress)}`}
+                    className="inline-flex items-center gap-2 text-sm bg-gold-accent text-dark-footer px-4 py-2 rounded-lg font-medium hover:bg-gold-accent/90 transition-colors"
+                  >
+                    {t.getExact}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-6 flex flex-col justify-center">
-          <p className="text-sm text-text-muted mb-1">{language === 'es' ? 'Pago Mensual Estimado' : 'Estimated Monthly Payment'}</p>
-          <p className="text-4xl font-display font-bold text-gold-accent mb-4">{formatCurrency(monthlyPayment)}</p>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-text-muted">{language === 'es' ? 'Monto del Préstamo' : 'Loan Amount'}</span><span className="font-medium">{formatCurrency(principal)}</span></div>
-            <div className="flex justify-between"><span className="text-text-muted">{language === 'es' ? 'Interés Total' : 'Total Interest'}</span><span className="font-medium">{formatCurrency(totalInterest)}</span></div>
-            <div className="flex justify-between border-t pt-2"><span className="text-text-muted">{language === 'es' ? 'Costo Total' : 'Total Cost'}</span><span className="font-medium">{formatCurrency(principal + totalInterest)}</span></div>
+        {/* Results Column */}
+        <div className="bg-white rounded-xl p-6 flex flex-col">
+          <p className="text-sm font-medium text-deep-brown uppercase tracking-wide mb-4">
+            {language === 'es' ? 'Pago Mensual Estimado' : 'Estimated Monthly Payment'}
+          </p>
+
+          {/* PITI Breakdown */}
+          <div className="space-y-3 mb-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-text-muted">{t.principalInterest}</span>
+              <span className="font-medium">{formatCurrency(monthlyPI)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-text-muted">{t.propertyTax}</span>
+              <span className="font-medium">{formatCurrency(monthlyTax)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-text-muted">{t.insurance}</span>
+              <span className="font-medium">{formatCurrency(monthlyInsurance)}</span>
+            </div>
+            <div className="border-t border-brand-border pt-3">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-deep-brown">{t.totalPayment}</span>
+                <span className="text-2xl font-display font-bold text-gold-accent">{formatCurrency(totalPayment)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Homestead Comparison (when toggle is on) */}
+          {applyHomestead && (
+            <div className="bg-cream/50 rounded-lg p-4 mb-4 space-y-2">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-text-muted">{t.withoutHomestead}:</span>
+                <span className="font-medium">{formatCurrency(totalPaymentWithoutHomestead)}/mo</span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gold-accent font-medium">{t.withHomestead}:</span>
+                <span className="font-bold text-gold-accent">{formatCurrency(totalPayment)}/mo</span>
+              </div>
+              <div className="text-xs text-green-600 font-medium pt-1">
+                {language === 'es' ? 'Ahorras' : 'You save'} {formatCurrency(totalPaymentWithoutHomestead - totalPayment)}/mo
+              </div>
+            </div>
+          )}
+
+          {/* Loan Amount Info */}
+          <div className="text-sm text-text-muted mt-auto">
+            <div className="flex justify-between">
+              <span>{t.loanAmount}:</span>
+              <span className="font-medium">{formatCurrency(loanAmount)}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <Link href="/contact" className="inline-flex items-center gap-1 text-sm text-gold-accent hover:underline mt-4">
-        {language === 'es' ? 'Habla con Daisy sobre tus números →' : 'Talk to Daisy about your numbers →'}
-      </Link>
+      {/* CTA */}
+      <div className="mt-6 pt-4 border-t border-brand-border">
+        <Link
+          href="/contact?purpose=payment-estimate"
+          className="inline-flex items-center gap-2 bg-gold-accent text-dark-footer px-6 py-3 rounded-xl font-semibold hover:bg-gold-accent/90 transition-colors"
+        >
+          {t.getExact}
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+        <p className="text-xs text-text-muted mt-4 italic">
+          {t.disclaimer}
+        </p>
+      </div>
     </div>
   );
 }

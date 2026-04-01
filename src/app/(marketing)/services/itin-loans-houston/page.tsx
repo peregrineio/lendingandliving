@@ -3,7 +3,7 @@ import { ITINLoansContent } from './itin-loans-content';
 
 export const metadata: Metadata = {
   title: 'ITIN Loans Houston TX | Buy a Home Without Social Security Number | Lending & Living',
-  description: 'Qualify for a mortgage in Houston with your ITIN number. No Social Security Number required. Bilingual loan officer Daisy Castro helps immigrant families become homeowners.',
+  description: 'Qualify for a mortgage in Houston with your ITIN number. No Social Security Number required. Bilingual loan officer Daisy Castro helps ITIN borrowers and their families become homeowners.',
   keywords: [
     'ITIN loans Houston',
     'ITIN mortgage Houston',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'ITIN Loans Houston TX | Buy a Home Without Social Security Number',
-    description: 'Qualify for a mortgage in Houston with your ITIN number. No Social Security Number required. Bilingual loan officer Daisy Castro helps immigrant families become homeowners.',
+    description: 'Qualify for a mortgage in Houston with your ITIN number. No Social Security Number required. Bilingual loan officer Daisy Castro helps ITIN borrowers and their families become homeowners.',
     type: 'website',
     locale: 'en_US',
     alternateLocale: 'es_MX',

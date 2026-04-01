@@ -6,6 +6,7 @@ import {
   WhyDaisySection,
   ServicesPreview,
   DPASpotlight,
+  RentVsBuySection,
   HowItWorksSection,
   TestimonialsSection,
   FooterCTA,
@@ -30,6 +31,9 @@ export default function Home() {
 
         {/* DPA Spotlight */}
         <DPASpotlight />
+
+        {/* Rent vs Buy */}
+        <RentVsBuySection />
 
         {/* How It Works */}
         <HowItWorksSection />

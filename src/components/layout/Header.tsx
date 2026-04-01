@@ -74,6 +74,7 @@ export function Header() {
       <div className="section-container">
         <nav className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
+          {/* TODO: Replace with <Image src="/images/logo.png" alt="Lending & Living" width={120} height={60} priority className="h-12 w-auto" /> when Daisy provides logo files */}
           <Link href="/" className="flex items-center gap-2 group">
             <span className="font-display text-2xl md:text-3xl font-bold text-deep-brown group-hover:text-gold-accent transition-colors">
               L&L

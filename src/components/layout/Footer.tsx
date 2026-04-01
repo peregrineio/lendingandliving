@@ -68,6 +68,7 @@ export function Footer() {
           {/* Column 1: Brand */}
           <div className="space-y-6">
             <div>
+              {/* TODO: Replace with <Image src="/images/logo-white.png" alt="Lending & Living" width={120} height={60} className="h-10 w-auto" /> when Daisy provides logo files */}
               <Link href="/" className="inline-block group">
                 <span className="font-display text-3xl font-bold text-cream group-hover:text-gold-accent transition-colors">
                   L&L

@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { RefreshCw, CheckCircle, DollarSign, Phone, ArrowRight, TrendingDown, Banknote, Home, Calculator, Clock } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/lib/translations';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const refinanceTypes = {
@@ -62,21 +63,70 @@ const faqData = {
   ],
 };
 
-// Break-even Calculator
-function BreakEvenCalculator({ language }: { language: 'en' | 'es' }) {
-  const [currentPayment, setCurrentPayment] = useState('');
-  const [newPayment, setNewPayment] = useState('');
-  const [closingCosts, setClosingCosts] = useState('');
-  const [result, setResult] = useState<number | null>(null);
+// Bankrate-Style Refinance Calculator
+function RefinanceCalculator({ language }: { language: 'en' | 'es' }) {
+  const t = translations[language].refinance;
 
-  const calculate = () => {
-    const current = parseFloat(currentPayment.replace(/,/g, ''));
-    const newPmt = parseFloat(newPayment.replace(/,/g, ''));
-    const costs = parseFloat(closingCosts.replace(/,/g, ''));
-    if (isNaN(current) || isNaN(newPmt) || isNaN(costs) || current <= newPmt) return;
-    const monthsToBreakEven = Math.ceil(costs / (current - newPmt));
-    setResult(monthsToBreakEven);
-  };
+  // Current loan inputs
+  const [homeValue, setHomeValue] = useState('400000');
+  const [loanBalance, setLoanBalance] = useState('300000');
+  const [currentRate, setCurrentRate] = useState('7.5');
+  const [currentPaymentInput, setCurrentPaymentInput] = useState('');
+  const [remainingTerm, setRemainingTerm] = useState('25');
+
+  // New loan inputs
+  const [newRate, setNewRate] = useState('6.5');
+  const [newTerm, setNewTerm] = useState('30');
+  const [closingCosts, setClosingCosts] = useState('3500');
+
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
+
+  const results = useMemo(() => {
+    const balance = parseFloat(loanBalance.replace(/,/g, '')) || 0;
+    const currentRateNum = (parseFloat(currentRate) || 0) / 100 / 12;
+    const remainingPayments = (parseInt(remainingTerm) || 25) * 12;
+    const newRateNum = (parseFloat(newRate) || 0) / 100 / 12;
+    const newPayments = (parseInt(newTerm) || 30) * 12;
+    const costs = parseFloat(closingCosts.replace(/,/g, '')) || 3500;
+
+    // Calculate current payment (if not entered, auto-calculate)
+    let currentPayment = parseFloat(currentPaymentInput.replace(/,/g, ''));
+    if (isNaN(currentPayment) || currentPayment === 0) {
+      if (currentRateNum > 0 && balance > 0) {
+        currentPayment = balance * (currentRateNum * Math.pow(1 + currentRateNum, remainingPayments)) / (Math.pow(1 + currentRateNum, remainingPayments) - 1);
+      } else {
+        currentPayment = 0;
+      }
+    }
+
+    // Calculate new payment
+    let newPayment = 0;
+    if (newRateNum > 0 && balance > 0) {
+      newPayment = balance * (newRateNum * Math.pow(1 + newRateNum, newPayments)) / (Math.pow(1 + newRateNum, newPayments) - 1);
+    }
+
+    // Calculate savings
+    const monthlySavings = currentPayment - newPayment;
+    const annualSavings = monthlySavings * 12;
+
+    // Break-even (how many months to recover closing costs)
+    const breakEvenMonths = monthlySavings > 0 ? Math.ceil(costs / monthlySavings) : 0;
+
+    // Lifetime savings (simplified - remaining term vs new term)
+    const yearsToCompare = Math.min(parseInt(remainingTerm) || 25, parseInt(newTerm) || 30);
+    const lifetimeSavings = annualSavings * yearsToCompare;
+
+    return {
+      currentPayment,
+      newPayment,
+      monthlySavings,
+      annualSavings,
+      breakEvenMonths,
+      lifetimeSavings,
+      isPositive: monthlySavings > 0,
+    };
+  }, [loanBalance, currentRate, remainingTerm, newRate, newTerm, closingCosts, currentPaymentInput]);
 
   return (
     <div className="bg-cream rounded-2xl p-6">
@@ -84,46 +134,193 @@ function BreakEvenCalculator({ language }: { language: 'en' | 'es' }) {
         <div className="w-12 h-12 rounded-lg bg-gold-accent/10 flex items-center justify-center">
           <Calculator className="w-6 h-6 text-gold-accent" />
         </div>
-        <div>
-          <h3 className="font-display text-lg text-deep-brown">{language === 'es' ? 'Calculadora de Punto de Equilibrio' : 'Break-Even Calculator'}</h3>
-          <p className="text-sm text-text-muted">{language === 'es' ? '¿Cuánto tiempo para recuperar costos?' : 'How long to recoup costs?'}</p>
+        <h3 className="font-display text-xl text-deep-brown">{t.title}</h3>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Inputs */}
+        <div className="space-y-6">
+          {/* Current Loan Section */}
+          <div>
+            <h4 className="font-semibold text-deep-brown mb-3 uppercase text-sm tracking-wide border-b border-brand-border pb-2">
+              {t.currentLoan}
+            </h4>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-text-muted mb-1">{t.homeValue}</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
+                  <input
+                    type="text"
+                    value={homeValue}
+                    onChange={(e) => setHomeValue(e.target.value.replace(/[^0-9]/g, ''))}
+                    className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm text-text-muted mb-1">{t.loanBalance}</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
+                  <input
+                    type="text"
+                    value={loanBalance}
+                    onChange={(e) => setLoanBalance(e.target.value.replace(/[^0-9]/g, ''))}
+                    className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm text-text-muted mb-1">{t.currentRate}</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={currentRate}
+                    onChange={(e) => setCurrentRate(e.target.value)}
+                    className="w-full pl-4 pr-8 py-2 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">%</span>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm text-text-muted mb-1">
+                  {t.currentPayment} <span className="text-xs italic">({t.autoCalc})</span>
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
+                  <input
+                    type="text"
+                    value={currentPaymentInput}
+                    onChange={(e) => setCurrentPaymentInput(e.target.value.replace(/[^0-9]/g, ''))}
+                    placeholder={formatCurrency(results.currentPayment).replace('$', '')}
+                    className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm text-text-muted mb-1">{t.remainingTerm}</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={remainingTerm}
+                    onChange={(e) => setRemainingTerm(e.target.value.replace(/[^0-9]/g, ''))}
+                    className="w-full pl-4 pr-16 py-2 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted text-sm">{t.years}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* New Loan Section */}
+          <div>
+            <h4 className="font-semibold text-deep-brown mb-3 uppercase text-sm tracking-wide border-b border-brand-border pb-2">
+              {t.newLoan}
+            </h4>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-text-muted mb-1">{t.newRate}</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={newRate}
+                    onChange={(e) => setNewRate(e.target.value)}
+                    className="w-full pl-4 pr-8 py-2 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">%</span>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm text-text-muted mb-1">{t.newTerm}</label>
+                <select
+                  value={newTerm}
+                  onChange={(e) => setNewTerm(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none"
+                >
+                  <option value="10">10 {t.years}</option>
+                  <option value="15">15 {t.years}</option>
+                  <option value="20">20 {t.years}</option>
+                  <option value="30">30 {t.years}</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm text-text-muted mb-1">{t.closingCosts}</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
+                  <input
+                    type="text"
+                    value={closingCosts}
+                    onChange={(e) => setClosingCosts(e.target.value.replace(/[^0-9]/g, ''))}
+                    className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Results */}
+        <div className="bg-white rounded-xl p-6 border border-brand-border">
+          <h4 className="font-semibold text-deep-brown mb-4 uppercase text-sm tracking-wide border-b border-brand-border pb-2">
+            {t.results}
+          </h4>
+
+          <div className="space-y-4">
+            <div className="flex justify-between items-center py-2 border-b border-brand-border/50">
+              <span className="text-text-muted">{t.currentMonthly}</span>
+              <span className="font-medium text-deep-brown">{formatCurrency(results.currentPayment)}</span>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b border-brand-border/50">
+              <span className="text-text-muted">{t.newMonthly}</span>
+              <span className="font-medium text-deep-brown">{formatCurrency(results.newPayment)}</span>
+            </div>
+
+            <div className="bg-cream/50 rounded-lg p-4 space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-deep-brown">{t.monthlySavings}</span>
+                <span className={`text-2xl font-display font-bold ${results.isPositive ? 'text-gold-accent' : 'text-red-500'}`}>
+                  {formatCurrency(results.monthlySavings)}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-text-muted">{t.annualSavings}</span>
+                <span className="font-medium">{formatCurrency(results.annualSavings)}</span>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-2">
+              <div className="flex justify-between items-center">
+                <span className="text-text-muted">{t.breakEven}</span>
+                <span className="font-medium text-deep-brown">
+                  {results.isPositive ? `${results.breakEvenMonths} ${t.months}` : '—'}
+                </span>
+              </div>
+              {results.isPositive && results.breakEvenMonths > 0 && (
+                <p className="text-xs text-text-muted italic">
+                  {t.breakEvenDesc} {results.breakEvenMonths} {t.months}
+                </p>
+              )}
+              <div className="flex justify-between items-center pt-2 border-t border-brand-border/50">
+                <span className="text-text-muted">{t.lifetimeSavings}</span>
+                <span className="font-bold text-green-600">{formatCurrency(results.lifetimeSavings)}</span>
+              </div>
+            </div>
+          </div>
+
+          <Link
+            href="/contact?purpose=refinance"
+            className="w-full mt-6 inline-flex items-center justify-center gap-2 py-3 bg-gold-accent text-dark-footer rounded-lg font-semibold hover:bg-gold-accent/90 transition-colors"
+          >
+            {t.cta}
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-deep-brown mb-1">{language === 'es' ? 'Pago Mensual Actual' : 'Current Monthly Payment'}</label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
-            <input type="text" value={currentPayment} onChange={(e) => setCurrentPayment(e.target.value.replace(/[^0-9,]/g, ''))} placeholder="2,500" className="w-full pl-8 pr-4 py-3 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none transition-all" />
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-deep-brown mb-1">{language === 'es' ? 'Nuevo Pago Mensual' : 'New Monthly Payment'}</label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
-            <input type="text" value={newPayment} onChange={(e) => setNewPayment(e.target.value.replace(/[^0-9,]/g, ''))} placeholder="2,200" className="w-full pl-8 pr-4 py-3 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none transition-all" />
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-deep-brown mb-1">{language === 'es' ? 'Costos de Cierre Estimados' : 'Estimated Closing Costs'}</label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
-            <input type="text" value={closingCosts} onChange={(e) => setClosingCosts(e.target.value.replace(/[^0-9,]/g, ''))} placeholder="6,000" className="w-full pl-8 pr-4 py-3 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none transition-all" />
-          </div>
-        </div>
-        <button onClick={calculate} className="w-full py-3 bg-gold-accent text-dark-footer rounded-lg font-semibold hover:bg-gold-accent/90 transition-colors">
-          {language === 'es' ? 'Calcular' : 'Calculate'}
-        </button>
-        {result !== null && (
-          <div className="mt-4 p-4 rounded-lg bg-green-50 border border-green-200 text-center">
-            <p className="text-green-800">
-              {language === 'es' ? 'Punto de equilibrio: ' : 'Break-even: '}
-              <span className="font-bold">{result} {language === 'es' ? 'meses' : 'months'}</span>
-              {result <= 24 && <span className="block text-sm mt-1">{language === 'es' ? '¡Probablemente vale la pena!' : 'Likely worth it!'}</span>}
-            </p>
-          </div>
-        )}
-      </div>
+
+      {/* Disclaimer */}
+      <p className="text-xs text-text-muted font-dm italic border-t border-brand-border pt-4 mt-6">
+        {t.disclaimer}
+      </p>
     </div>
   );
 }
@@ -231,29 +428,17 @@ export function RefinanceContent() {
         {/* Calculator Section */}
         <section ref={calcRef} className="section-padding bg-warm-white">
           <div className="section-container">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={calcInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
-                <h2 className="text-display-lg text-deep-brown mb-6">{isSpanish ? '¿Vale la Pena Refinanciar?' : 'Is Refinancing Worth It?'}</h2>
-                <p className="text-text-muted mb-6">
-                  {isSpanish
-                    ? 'Usa esta calculadora para estimar cuánto tiempo tomará recuperar tus costos de cierre con tus ahorros mensuales.'
-                    : 'Use this calculator to estimate how long it will take to recoup your closing costs with your monthly savings.'}
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-gold-accent mt-0.5" />
-                    <p className="text-sm text-text-muted">{isSpanish ? 'Si planeas quedarte más de 2-3 años, probablemente vale la pena' : 'If you plan to stay 2-3+ years, it is likely worth it'}</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Phone className="w-5 h-5 text-gold-accent mt-0.5" />
-                    <p className="text-sm text-text-muted">{isSpanish ? 'Daisy puede hacer un análisis completo para tu situación' : 'Daisy can run a full analysis for your situation'}</p>
-                  </div>
-                </div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, x: 20 }} animate={calcInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }}>
-                <BreakEvenCalculator language={language} />
-              </motion.div>
-            </div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={calcInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="text-center mb-8">
+              <h2 className="text-display-lg text-deep-brown mb-4">{isSpanish ? '¿Vale la Pena Refinanciar?' : 'Is Refinancing Worth It?'}</h2>
+              <p className="text-text-muted max-w-2xl mx-auto">
+                {isSpanish
+                  ? 'Compara tu préstamo actual con un nuevo préstamo para ver tus ahorros potenciales.'
+                  : 'Compare your current loan with a new loan to see your potential savings.'}
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={calcInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }}>
+              <RefinanceCalculator language={language} />
+            </motion.div>
           </div>
         </section>
 

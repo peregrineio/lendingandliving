@@ -91,6 +91,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
+    // FSBO Page
+    {
+      url: `${baseUrl}/fsbo-houston`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9, // High priority - lead capture page
+    },
   ];
 
   // Blog posts

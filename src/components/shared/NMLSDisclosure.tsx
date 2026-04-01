@@ -25,11 +25,27 @@ export function NMLSDisclosure({ className = '', variant = 'default' }: NMLSDisc
     light: 'border-warm-taupe/20',
   };
 
+  const headingClasses = {
+    default: 'text-deep-brown',
+    light: 'text-cream',
+  };
+
   return (
-    <div className={`text-xs font-body leading-relaxed border-t pt-4 mt-4 ${textClasses[variant]} ${borderClasses[variant]} ${className}`}>
+    <div className={`text-xs font-body leading-relaxed border-t pt-4 mt-4 space-y-2 ${textClasses[variant]} ${borderClasses[variant]} ${className}`}>
+      <p className={`font-medium ${headingClasses[variant]}`}>
+        Daisy Castro | NMLS #2592627
+      </p>
       <p>
-        Daisy Castro-Shahin | NMLS #2461273 | Matador Lending | NMLS #1871433 |
-        5718 Westheimer Rd Suite 1000, Houston TX 77057
+        {isSpanish
+          ? 'Soy una oficial de préstamos con licencia afiliada a Matador Lending. Los préstamos hipotecarios son originados a través de Matador Lending, NMLS #1871433, un corredor hipotecario con licencia.'
+          : 'I am a licensed loan officer affiliated with Matador Lending. Mortgage loans are originated through Matador Lending, NMLS #1871433, a licensed mortgage broker.'}
+      </p>
+      <p className="flex items-center gap-2">
+        {/* Equal Housing Opportunity Icon */}
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 flex-shrink-0">
+          <path d="M12 3L2 9v12h20V9L12 3zm0 2.17l8 4.8V19H4V9.97l8-4.8zM12 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+        </svg>
+        <span>{isSpanish ? 'Oportunidad Igual de Vivienda' : 'Equal Housing Opportunity'}</span>
       </p>
       <p className="mt-2">
         {isSpanish ? (
