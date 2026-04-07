@@ -43,7 +43,7 @@ const faqData = {
     {
       question: 'What credit score do I need for an ITIN loan?',
       answer:
-        'Most ITIN loan programs require a minimum credit score of 620-660. However, we also work with alternative credit options for borrowers who may not have a traditional credit history. This can include rental payments, utility bills, and other regular payment histories.',
+        'Most ITIN loan programs require a minimum credit score of 660-680 (lender requirements may vary). However, we also work with alternative credit options for borrowers who may not have a traditional credit history. This can include rental payments, utility bills, and other regular payment histories.',
     },
     {
       question: 'How much down payment do I need?',
@@ -63,7 +63,7 @@ const faqData = {
     {
       question: 'What interest rates can I expect?',
       answer:
-        'ITIN loan interest rates are typically 1-2% higher than conventional loan rates due to the specialized nature of the program. However, rates vary based on your credit score, down payment amount, and current market conditions. Daisy will work to find you the most competitive rate available.',
+        'ITIN loan interest rates are typically higher than conventional loan rates. The exact rate depends on your credit profile, down payment, and lender. Contact Daisy to get a personalized rate estimate.',
     },
     {
       question: 'Can my spouse use their SSN if I have an ITIN?',
@@ -95,7 +95,7 @@ const faqData = {
     {
       question: '¿Qué puntaje de crédito necesito para un préstamo ITIN?',
       answer:
-        'La mayoría de los programas de préstamos ITIN requieren un puntaje de crédito mínimo de 620-660. Sin embargo, también trabajamos con opciones de crédito alternativas para prestatarios que no tienen un historial de crédito tradicional. Esto puede incluir pagos de renta, facturas de servicios públicos y otros historiales de pagos regulares.',
+        'La mayoría de los programas de préstamos ITIN requieren un puntaje de crédito mínimo de 660-680 (los requisitos del prestamista pueden variar). Sin embargo, también trabajamos con opciones de crédito alternativas para prestatarios que no tienen un historial de crédito tradicional. Esto puede incluir pagos de renta, facturas de servicios públicos y otros historiales de pagos regulares.',
     },
     {
       question: '¿Cuánto enganche necesito?',
@@ -115,7 +115,7 @@ const faqData = {
     {
       question: '¿Qué tasas de interés puedo esperar?',
       answer:
-        'Las tasas de interés de préstamos ITIN son típicamente 1-2% más altas que las tasas de préstamos convencionales debido a la naturaleza especializada del programa. Sin embargo, las tasas varían según tu puntaje de crédito, monto del enganche y las condiciones actuales del mercado. Daisy trabajará para encontrarte la tasa más competitiva disponible.',
+        'Las tasas de interés de los préstamos ITIN son típicamente más altas que las tasas de préstamos convencionales. La tasa exacta depende de tu perfil de crédito, enganche y prestamista. Contacta a Daisy para obtener un estimado de tasa personalizado.',
     },
     {
       question: '¿Puede mi cónyuge usar su SSN si yo tengo un ITIN?',
@@ -273,7 +273,7 @@ function JsonLdSchema({ language }: { language: 'en' | 'es' }) {
   const personSchema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Daisy Castro-Shahin',
+    name: 'Daisy Castro',
     jobTitle: language === 'en' ? 'Mortgage Loan Officer' : 'Oficial de Préstamos Hipotecarios',
     worksFor: {
       '@type': 'Organization',
@@ -457,7 +457,7 @@ export function ITINLoansContent() {
                     <div className="w-12 h-12 rounded-lg bg-gold-accent/10 flex items-center justify-center mx-auto mb-3">
                       <CreditCard className="w-6 h-6 text-gold-accent" />
                     </div>
-                    <p className="text-2xl font-display font-bold text-deep-brown">620+</p>
+                    <p className="text-2xl font-display font-bold text-deep-brown">660+</p>
                     <p className="text-sm text-text-muted">
                       {isSpanish ? 'Crédito Mín.' : 'Min. Credit'}
                     </p>
@@ -721,7 +721,7 @@ export function ITINLoansContent() {
                 </div>
                 <blockquote className="font-cormorant italic text-xl text-deep-brown mb-4">
                   {isSpanish
-                    ? '"Me especializo en ayudar a personas con ITIN a lograr ser dueñas de su hogar. Has trabajado duro y construido una vida aquí — ser dueño de una casa debe ser parte de esa historia. Te guío en cada paso con claridad, paciencia y dedicación."'
+                    ? '"Me especializo en ayudar a personas con ITIN a lograr ser dueños de su hogar. Has trabajado duro y construido una vida aquí — ser dueño de una casa debe ser parte de esa historia. Te guío en cada paso con claridad, paciencia y dedicación."'
                     : '"I specialize in helping ITIN individuals navigate the path to homeownership. You\'ve worked hard and built a life here — owning a home should be part of that story. I\'ll guide you through every step with clarity, patience, and care."'}
                 </blockquote>
                 <p className="text-text-muted">

@@ -55,7 +55,7 @@ function JsonLdSchema() {
   const personSchema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Daisy Castro-Shahin',
+    name: 'Daisy Castro',
     jobTitle: 'Mortgage Loan Officer',
     worksFor: { '@type': 'Organization', name: 'Matador Lending' },
     description: 'Bilingual mortgage loan officer in Houston, Texas specializing in first-time buyers, ITIN loans, and down payment assistance programs.',
@@ -96,7 +96,7 @@ export function AboutContent() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, x: -20 }} animate={heroInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
                 <p className="text-gold-accent font-cormorant italic text-lg mb-2">{isSpanish ? 'Conoce a Tu Oficial de Préstamos' : 'Meet Your Loan Officer'}</p>
-                <h1 className="text-display-xl text-deep-brown mb-6">Daisy Castro-Shahin</h1>
+                <h1 className="text-display-xl text-deep-brown mb-6">Daisy Castro</h1>
                 <p className="text-lg text-text-muted mb-8">
                   {isSpanish
                     ? 'Oficial de Préstamos Hipotecarios Bilingüe en Houston, TX. Especializada en compradores primerizos, préstamos ITIN, y programas de ayuda para el enganche.'

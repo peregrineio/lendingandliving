@@ -46,12 +46,16 @@ export interface Translations {
       dpa_desc: string;
       va_title: string;
       va_desc: string;
+      usda_title: string;
+      usda_desc: string;
       refinance_title: string;
       refinance_desc: string;
       investor_title: string;
       investor_desc: string;
       nontraditional_title: string;
       nontraditional_desc: string;
+      jumbo_title: string;
+      jumbo_desc: string;
       cta: string;
     };
     dpa: {
@@ -207,7 +211,7 @@ export const translations: Translations = {
       headline: "Houston's Trusted Mortgage Advisor",
       subheadline: 'Helping first-time buyers and families achieve homeownership with clarity, care, and zero confusion.',
       cta_primary: 'Get Pre-Approved',
-      cta_secondary: 'View Services',
+      cta_secondary: 'Which Loan Fits You Best?',
       trust: 'NMLS #2461273 | Matador Lending | Equal Housing Opportunity',
     },
     whyDaisy: {
@@ -231,14 +235,18 @@ export const translations: Translations = {
       itin_desc: "Buy a home without a Social Security Number. We make it possible.",
       dpa_title: 'Down Payment Assistance',
       dpa_desc: "You may qualify for thousands in assistance. Most buyers don't even know it exists.",
-      va_title: 'VA & USDA Loans',
-      va_desc: 'Zero down payment options for veterans and rural buyers.',
+      va_title: 'VA Loans',
+      va_desc: 'Zero down payment, no PMI for veterans and active military.',
+      usda_title: 'USDA Loans',
+      usda_desc: 'Zero down payment for eligible rural and suburban areas.',
       refinance_title: 'Refinance',
       refinance_desc: 'Lower your rate, reduce your payment, or cash out your equity.',
       investor_title: 'Investor Finance',
       investor_desc: 'DSCR, bank statement, and asset-based loans for real estate investors.',
       nontraditional_title: 'Non-Traditional Loans',
       nontraditional_desc: "Self-employed? 1099? Bank statement loans for non-W2 borrowers.",
+      jumbo_title: 'Jumbo Loans',
+      jumbo_desc: 'Financing for high-value homes above conventional loan limits.',
       cta: 'Learn More',
     },
     dpa: {
@@ -391,7 +399,7 @@ export const translations: Translations = {
       headline: 'Tu Asesora Hipotecaria de Confianza en Houston',
       subheadline: 'Ayudando a compradores por primera vez y familias a lograr ser dueños de casa, con claridad y sin confusión.',
       cta_primary: 'Obtén Pre-Aprobación',
-      cta_secondary: 'Ver Servicios',
+      cta_secondary: '¿Qué Préstamo Es Para Ti?',
       trust: 'NMLS #2461273 | Matador Lending | Oportunidad Igual de Vivienda',
     },
     whyDaisy: {
@@ -415,14 +423,18 @@ export const translations: Translations = {
       itin_desc: 'Compra una casa sin número de seguro social. Lo hacemos posible.',
       dpa_title: 'Ayuda para Enganche',
       dpa_desc: 'Puedes calificar para miles en asistencia. La mayoría no sabe que existe.',
-      va_title: 'Préstamos VA y USDA',
-      va_desc: 'Opciones sin enganche para veteranos y compradores rurales.',
+      va_title: 'Préstamos VA',
+      va_desc: 'Cero enganche, sin PMI para veteranos y militares activos.',
+      usda_title: 'Préstamos USDA',
+      usda_desc: 'Cero enganche para áreas rurales y suburbanas elegibles.',
       refinance_title: 'Refinanciamiento',
       refinance_desc: 'Baja tu tasa, reduce tu pago o retira el capital de tu casa.',
       investor_title: 'Finanzas para Inversionistas',
       investor_desc: 'Préstamos DSCR, estado de cuenta bancario y basados en activos.',
       nontraditional_title: 'Préstamos No Tradicionales',
       nontraditional_desc: '¿Trabajas por tu cuenta? Préstamos para prestatarios sin W2.',
+      jumbo_title: 'Préstamos Jumbo',
+      jumbo_desc: 'Financiamiento para casas de alto valor que superan los límites convencionales.',
       cta: 'Ver Más',
     },
     dpa: {

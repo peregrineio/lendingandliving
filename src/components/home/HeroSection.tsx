@@ -195,7 +195,7 @@ export function HeroSection() {
                     <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-cream/50 flex items-center justify-center">
                       <span className="text-4xl">👩🏻</span>
                     </div>
-                    <p className="font-display text-lg">Daisy Castro-Shahin</p>
+                    <p className="font-display text-lg">Daisy Castro</p>
                     <p className="text-sm mt-1">NMLS #2461273</p>
                   </div>
                 </div>
@@ -203,7 +203,7 @@ export function HeroSection() {
                 {/* Uncomment when real photo is available */}
                 {/* <Image
                   src="/images/daisy-portrait.jpg"
-                  alt="Daisy Castro-Shahin - Houston Mortgage Loan Officer"
+                  alt="Daisy Castro - Houston Mortgage Loan Officer"
                   fill
                   className="object-cover"
                   priority

@@ -118,7 +118,7 @@ function AuthorBox() {
         <User className="w-8 h-8 text-gold-accent" />
       </div>
       <div className="text-center sm:text-left">
-        <h3 className="font-display text-lg text-deep-brown mb-1">Daisy Castro-Shahin</h3>
+        <h3 className="font-display text-lg text-deep-brown mb-1">Daisy Castro</h3>
         <p className="text-gold-accent text-sm mb-2">
           {isSpanish ? 'Oficial de Préstamos Hipotecarios' : 'Mortgage Loan Officer'}
         </p>

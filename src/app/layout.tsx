@@ -54,10 +54,10 @@ export const metadata: Metadata = {
     "bilingual mortgage Houston",
     "Spanish mortgage services",
     "Texas mortgage",
-    "Daisy Castro-Shahin",
+    "Daisy Castro",
     "Lending & Living",
   ],
-  authors: [{ name: "Daisy Castro-Shahin" }],
+  authors: [{ name: "Daisy Castro" }],
   creator: "Peregrine IO",
   openGraph: {
     type: "website",

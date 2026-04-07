@@ -286,7 +286,7 @@ const faqData = {
     },
     {
       question: 'Do I need a real estate agent?',
-      answer: 'While not required, a buyer\'s agent is highly recommended and typically costs you nothing (the seller pays the commission). They can negotiate on your behalf, guide you through the process, and help you avoid costly mistakes.',
+      answer: 'While not required, a buyer\'s agent is highly recommended. They can negotiate on your behalf, guide you through the process, and help you avoid costly mistakes. Be sure to discuss compensation arrangements upfront with any agent you work with.',
     },
     {
       question: 'What are closing costs?',
@@ -320,7 +320,7 @@ const faqData = {
     },
     {
       question: '¿Necesito un agente de bienes raíces?',
-      answer: 'Aunque no es requerido, un agente de compradores es altamente recomendado y típicamente no te cuesta nada (el vendedor paga la comisión). Pueden negociar en tu nombre, guiarte en el proceso y ayudarte a evitar errores costosos.',
+      answer: 'Aunque no es requerido, un agente de compradores es altamente recomendado. Pueden negociar en tu nombre, guiarte en el proceso y ayudarte a evitar errores costosos. Asegúrate de discutir los arreglos de compensación con cualquier agente con el que trabajes.',
     },
     {
       question: '¿Qué son los costos de cierre?',
@@ -353,8 +353,8 @@ function ChecklistDownload({ language }: { language: 'en' | 'es' }) {
         </h4>
         <p className="text-sm text-text-muted">
           {language === 'es'
-            ? 'Tu checklist de comprador primerizo está en camino.'
-            : 'Your first-time buyer checklist is on its way.'}
+            ? 'Tu guía de comprador primerizo está en camino.'
+            : 'Your first-time homebuyer guide is on its way.'}
         </p>
       </div>
     );
@@ -385,7 +385,7 @@ function ChecklistDownload({ language }: { language: 'en' | 'es' }) {
         ) : (
           <>
             <Download className="w-4 h-4" />
-            {language === 'es' ? 'Descargar Checklist Gratis' : 'Download Free Checklist'}
+            {language === 'es' ? 'Obtener la Guía Gratis' : 'Get the Free Guide'}
           </>
         )}
       </button>
@@ -424,7 +424,7 @@ function JsonLdSchema({ language }: { language: 'en' | 'es' }) {
       : 'Guía completa para compradores primerizos en Houston, Texas.',
     author: {
       '@type': 'Person',
-      name: 'Daisy Castro-Shahin',
+      name: 'Daisy Castro',
       jobTitle: 'Mortgage Loan Officer',
     },
     publisher: {
@@ -539,7 +539,7 @@ export function FirstTimeBuyerContent() {
                   className="mb-8"
                 >
                   <h2 className="text-display-lg text-deep-brown mb-4">
-                    {isSpanish ? 'Checklist de Comprador Primerizo' : 'First-Time Buyer Checklist'}
+                    {isSpanish ? 'Guía del Comprador Primerizo' : 'First-Time Homebuyer Guide'}
                   </h2>
                   <p className="text-text-muted">
                     {isSpanish
@@ -588,7 +588,7 @@ export function FirstTimeBuyerContent() {
                     <Download className="w-6 h-6 text-gold-accent" />
                   </div>
                   <h3 className="font-display text-xl text-cream mb-2">
-                    {isSpanish ? 'Descarga el Checklist PDF' : 'Download the PDF Checklist'}
+                    {isSpanish ? 'Descarga la Guía Gratis' : 'Download Free Homebuyer Guide'}
                   </h3>
                   <p className="text-warm-taupe/80 text-sm mb-6">
                     {isSpanish

@@ -15,6 +15,8 @@ import {
   ArrowRight,
   Phone,
   CheckCircle,
+  Wheat,
+  Building,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/lib/translations';
@@ -94,6 +96,20 @@ const services = [
     },
   },
   {
+    icon: Wheat,
+    titleKey: 'usda_title',
+    descKey: 'usda_desc',
+    href: '/services/usda-loans-houston',
+    whoFor: {
+      en: 'Buyers in rural and suburban areas near Houston',
+      es: 'Compradores en áreas rurales y suburbanas cerca de Houston',
+    },
+    requirements: {
+      en: ['Property in eligible area', 'Income limits apply', 'Primary residence only'],
+      es: ['Propiedad en área elegible', 'Aplican límites de ingresos', 'Solo residencia principal'],
+    },
+  },
+  {
     icon: RefreshCw,
     titleKey: 'refinance_title',
     descKey: 'refinance_desc',
@@ -133,6 +149,20 @@ const services = [
     requirements: {
       en: ['12-24 months bank statements', 'Alternative credit sources', 'Higher reserves'],
       es: ['12-24 meses de estados de cuenta', 'Fuentes de crédito alternativas', 'Mayores reservas'],
+    },
+  },
+  {
+    icon: Building,
+    titleKey: 'jumbo_title',
+    descKey: 'jumbo_desc',
+    href: '/services/jumbo-loans-houston',
+    whoFor: {
+      en: 'High-value homes, luxury properties, above $806,500',
+      es: 'Casas de alto valor, propiedades de lujo, más de $806,500',
+    },
+    requirements: {
+      en: ['700+ credit score', '10-20% down payment', 'Strong income documentation'],
+      es: ['Puntaje de crédito 700+', '10-20% de enganche', 'Documentación de ingresos sólida'],
     },
   },
 ];

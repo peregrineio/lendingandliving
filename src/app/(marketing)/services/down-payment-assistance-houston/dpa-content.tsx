@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import {
@@ -11,12 +11,8 @@ import {
   Home,
   Phone,
   ArrowRight,
-  Calculator,
-  HelpCircle,
   Building,
-  Star,
   Award,
-  Shield,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import {
@@ -26,79 +22,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-// DPA Programs data
-const dpaPrograms = {
-  en: [
-    {
-      name: 'TDHCA My First Texas Home',
-      provider: 'Texas Department of Housing',
-      amount: 'Up to 5% of loan amount',
-      type: 'Deferred second lien (0% interest)',
-      requirements: ['First-time buyer OR veteran', 'Income limits apply', 'Purchase price limits apply'],
-      highlights: ['No monthly payments on DPA', 'Forgiven after 3 years if you stay', 'Can combine with FHA, VA, or USDA'],
-    },
-    {
-      name: 'SETH 5 Star Texas Advantage',
-      provider: 'Southeast Texas Housing Finance Corp',
-      amount: 'Up to 5% of loan amount',
-      type: 'Grant (does not need to be repaid)',
-      requirements: ['Income limits apply', 'Credit score 620+', 'Primary residence only'],
-      highlights: ['True grant - no repayment!', 'Available for repeat buyers', 'Works with FHA and conventional'],
-    },
-    {
-      name: 'Harris County HAP',
-      provider: 'Harris County Community Services',
-      amount: 'Up to $23,800',
-      type: 'Forgivable loan (10 years)',
-      requirements: ['Harris County residents', 'Income at or below 80% AMI', 'First-time buyer'],
-      highlights: ['Large assistance amount', 'Forgiven over 10 years', 'Homebuyer education required'],
-    },
-    {
-      name: 'City of Houston Homebuyer Assistance',
-      provider: 'Houston Housing & Community Dev',
-      amount: 'Up to $30,000',
-      type: 'Forgivable loan (5-10 years)',
-      requirements: ['City of Houston limits', 'Income limits apply', 'First-time buyer'],
-      highlights: ['Highest assistance available', 'Combined DPA + closing costs', 'HUD counseling required'],
-    },
-  ],
-  es: [
-    {
-      name: 'TDHCA Mi Primera Casa en Texas',
-      provider: 'Departamento de Vivienda de Texas',
-      amount: 'Hasta 5% del monto del préstamo',
-      type: 'Segunda hipoteca diferida (0% interés)',
-      requirements: ['Comprador primerizo O veterano', 'Aplican límites de ingresos', 'Aplican límites de precio'],
-      highlights: ['Sin pagos mensuales en DPA', 'Perdonado después de 3 años si te quedas', 'Se puede combinar con FHA, VA, o USDA'],
-    },
-    {
-      name: 'SETH 5 Star Texas Advantage',
-      provider: 'Southeast Texas Housing Finance Corp',
-      amount: 'Hasta 5% del monto del préstamo',
-      type: 'Subvención (no necesita devolverse)',
-      requirements: ['Aplican límites de ingresos', 'Puntaje de crédito 620+', 'Solo residencia principal'],
-      highlights: ['¡Subvención verdadera - sin pago!', 'Disponible para compradores repetidos', 'Funciona con FHA y convencional'],
-    },
-    {
-      name: 'Harris County HAP',
-      provider: 'Servicios Comunitarios del Condado Harris',
-      amount: 'Hasta $23,800',
-      type: 'Préstamo perdonable (10 años)',
-      requirements: ['Residentes del Condado Harris', 'Ingresos al o debajo del 80% AMI', 'Comprador primerizo'],
-      highlights: ['Gran cantidad de asistencia', 'Perdonado en 10 años', 'Educación de comprador requerida'],
-    },
-    {
-      name: 'Asistencia para Compradores de Houston',
-      provider: 'Houston Housing & Community Dev',
-      amount: 'Hasta $30,000',
-      type: 'Préstamo perdonable (5-10 años)',
-      requirements: ['Límites de la Ciudad de Houston', 'Aplican límites de ingresos', 'Comprador primerizo'],
-      highlights: ['Mayor asistencia disponible', 'DPA + costos de cierre combinados', 'Consejería HUD requerida'],
-    },
-  ],
-};
-
-// Income limits table data (2024 estimates - Harris County)
+// Income limits table data (Harris County)
 const incomeLimits = {
   headers: {
     en: ['Household Size', '80% AMI (Most Programs)', '115% AMI (TDHCA)'],
@@ -122,10 +46,6 @@ const mythsData = {
       truth: 'Many programs serve middle-income families. Income limits can be as high as $128,000+ for a family of 4 depending on the program.',
     },
     {
-      myth: 'DPA programs have terrible interest rates',
-      truth: 'Most DPA programs offer competitive market rates. Some even offer below-market rates to qualified buyers.',
-    },
-    {
       myth: 'The application process takes forever',
       truth: 'With an experienced loan officer like Daisy, DPA can be added to your loan with minimal additional time — often just a few extra days.',
     },
@@ -142,10 +62,6 @@ const mythsData = {
     {
       myth: 'La ayuda para enganche es solo para compradores de bajos ingresos',
       truth: 'Muchos programas sirven a familias de ingresos medios. Los límites de ingresos pueden ser hasta $128,000+ para una familia de 4 dependiendo del programa.',
-    },
-    {
-      myth: 'Los programas DPA tienen tasas de interés terribles',
-      truth: 'La mayoría de los programas DPA ofrecen tasas de mercado competitivas. Algunos incluso ofrecen tasas por debajo del mercado.',
     },
     {
       myth: 'El proceso de solicitud toma una eternidad',
@@ -175,7 +91,7 @@ const faqData = {
     },
     {
       question: 'What income limits apply to DPA programs?',
-      answer: 'Income limits vary by program and household size. Generally, you need to earn below 80-115% of the Area Median Income (AMI). For Harris County in 2024, this can range from $62,500 to $128,000+ depending on household size and program.',
+      answer: 'Income limits vary by program and household size. Generally, you need to earn below 80-115% of the Area Median Income (AMI). For Harris County in 2026, this can range from $62,500 to $128,000+ depending on household size and program.',
     },
     {
       question: 'Can I combine DPA with FHA, VA, or conventional loans?',
@@ -209,7 +125,7 @@ const faqData = {
     },
     {
       question: '¿Qué límites de ingresos aplican a los programas DPA?',
-      answer: 'Los límites de ingresos varían por programa y tamaño del hogar. Generalmente, necesitas ganar menos del 80-115% del Ingreso Medio del Área (AMI). Para el Condado Harris en 2024, esto puede variar de $62,500 a $128,000+ dependiendo del tamaño del hogar y programa.',
+      answer: 'Los límites de ingresos varían por programa y tamaño del hogar. Generalmente, necesitas ganar menos del 80-115% del Ingreso Medio del Área (AMI). Para el Condado Harris en 2026, esto puede variar de $62,500 a $128,000+ dependiendo del tamaño del hogar y programa.',
     },
     {
       question: '¿Puedo combinar DPA con préstamos FHA, VA o convencionales?',
@@ -233,159 +149,6 @@ const faqData = {
     },
   ],
 };
-
-// DPA Calculator Component
-function DPACalculator({ language }: { language: 'en' | 'es' }) {
-  const [homePrice, setHomePrice] = useState('');
-  const [householdIncome, setHouseholdIncome] = useState('');
-  const [householdSize, setHouseholdSize] = useState('2');
-  const [result, setResult] = useState<{ min: number; max: number; eligible: boolean } | null>(null);
-
-  const calculateDPA = () => {
-    const price = parseFloat(homePrice.replace(/,/g, ''));
-    const income = parseFloat(householdIncome.replace(/,/g, ''));
-    const size = parseInt(householdSize);
-
-    if (isNaN(price) || isNaN(income)) return;
-
-    // Income limit check (simplified - using 115% AMI as max)
-    const incomeLimits115 = [89700, 102500, 115300, 128100, 138350, 148600];
-    const maxIncome = incomeLimits115[Math.min(size - 1, 5)];
-    const eligible = income <= maxIncome;
-
-    // DPA estimates (5% of loan + potential additional programs)
-    const minDPA = price * 0.035; // Minimum FHA down payment covered
-    const maxDPA = Math.min(price * 0.05 + 30000, 40000); // 5% + additional programs, capped
-
-    setResult({
-      min: eligible ? minDPA : 0,
-      max: eligible ? maxDPA : 0,
-      eligible,
-    });
-  };
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
-  return (
-    <div className="bg-cream rounded-2xl p-6 md:p-8">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-lg bg-gold-accent/10 flex items-center justify-center">
-          <Calculator className="w-6 h-6 text-gold-accent" />
-        </div>
-        <div>
-          <h3 className="font-display text-xl text-deep-brown">
-            {language === 'es' ? 'Calcula Tu Asistencia' : 'Estimate Your Assistance'}
-          </h3>
-          <p className="text-sm text-text-muted">
-            {language === 'es' ? 'Estimación aproximada' : 'Rough estimate'}
-          </p>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-deep-brown mb-1">
-            {language === 'es' ? 'Precio de la Casa' : 'Home Price'}
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
-            <input
-              type="text"
-              value={homePrice}
-              onChange={(e) => setHomePrice(e.target.value.replace(/[^0-9,]/g, ''))}
-              placeholder="300,000"
-              className="w-full pl-8 pr-4 py-3 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none transition-all"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-deep-brown mb-1">
-            {language === 'es' ? 'Ingreso Anual del Hogar' : 'Household Annual Income'}
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">$</span>
-            <input
-              type="text"
-              value={householdIncome}
-              onChange={(e) => setHouseholdIncome(e.target.value.replace(/[^0-9,]/g, ''))}
-              placeholder="85,000"
-              className="w-full pl-8 pr-4 py-3 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none transition-all"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-deep-brown mb-1">
-            {language === 'es' ? 'Tamaño del Hogar' : 'Household Size'}
-          </label>
-          <select
-            value={householdSize}
-            onChange={(e) => setHouseholdSize(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none transition-all"
-          >
-            {[1, 2, 3, 4, 5, '6+'].map((size) => (
-              <option key={size} value={typeof size === 'number' ? size : 6}>
-                {size} {language === 'es' ? (size === 1 ? 'persona' : 'personas') : (size === 1 ? 'person' : 'people')}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          onClick={calculateDPA}
-          className="w-full py-3 bg-gold-accent text-dark-footer rounded-lg font-semibold hover:bg-gold-accent/90 transition-colors"
-        >
-          {language === 'es' ? 'Calcular Estimación' : 'Calculate Estimate'}
-        </button>
-
-        {result && (
-          <div className={`mt-4 p-4 rounded-lg ${result.eligible ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-            {result.eligible ? (
-              <>
-                <p className="font-semibold text-green-800 mb-2">
-                  {language === 'es' ? '¡Puedes calificar para asistencia!' : 'You may qualify for assistance!'}
-                </p>
-                <p className="text-green-700">
-                  {language === 'es' ? 'Rango estimado: ' : 'Estimated range: '}
-                  <span className="font-bold">{formatCurrency(result.min)} - {formatCurrency(result.max)}</span>
-                </p>
-                <p className="text-xs text-green-600 mt-2">
-                  {language === 'es'
-                    ? '*Estimación solo. Habla con Daisy para cantidades exactas.'
-                    : '*Estimate only. Talk to Daisy for exact amounts.'}
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="font-semibold text-red-800 mb-2">
-                  {language === 'es' ? 'Puede que excedas los límites de ingresos' : 'You may exceed income limits'}
-                </p>
-                <p className="text-red-700 text-sm">
-                  {language === 'es'
-                    ? 'Pero no te rindas — algunos programas tienen límites más altos. Llama a Daisy para revisar todas tus opciones.'
-                    : "But don't give up — some programs have higher limits. Call Daisy to review all your options."}
-                </p>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-
-      <p className="text-xs text-text-muted mt-4 text-center">
-        {language === 'es'
-          ? 'Esta es solo una estimación. Los montos reales dependen del programa y la elegibilidad.'
-          : 'This is only an estimate. Actual amounts depend on program and eligibility.'}
-      </p>
-    </div>
-  );
-}
 
 // JSON-LD Schema Component
 function JsonLdSchema({ language }: { language: 'en' | 'es' }) {
@@ -466,18 +229,16 @@ export function DPAContent() {
   const { language, isSpanish } = useLanguage();
   const heroRef = useRef(null);
   const whatIsRef = useRef(null);
-  const programsRef = useRef(null);
   const incomeRef = useRef(null);
   const mythsRef = useRef(null);
-  const calculatorRef = useRef(null);
+  const qualifyCTARef = useRef(null);
   const faqRef = useRef(null);
 
   const heroInView = useInView(heroRef, { once: true });
   const whatIsInView = useInView(whatIsRef, { once: true, margin: '-100px' });
-  const programsInView = useInView(programsRef, { once: true, margin: '-100px' });
   const incomeInView = useInView(incomeRef, { once: true, margin: '-100px' });
   const mythsInView = useInView(mythsRef, { once: true, margin: '-100px' });
-  const calculatorInView = useInView(calculatorRef, { once: true, margin: '-100px' });
+  const qualifyCTAInView = useInView(qualifyCTARef, { once: true, margin: '-100px' });
   const faqInView = useInView(faqRef, { once: true, margin: '-100px' });
 
   return (
@@ -632,86 +393,6 @@ export function DPAContent() {
           </div>
         </section>
 
-        {/* DPA Programs Section */}
-        <section ref={programsRef} className="section-padding bg-cream">
-          <div className="section-container">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={programsInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-display-lg text-deep-brown mb-4">
-                {isSpanish ? 'Programas DPA de Houston' : 'Houston DPA Programs'}
-              </h2>
-              <p className="text-lg text-text-muted max-w-2xl mx-auto">
-                {isSpanish
-                  ? 'Estos son algunos de los programas principales disponibles para compradores de Houston'
-                  : 'These are some of the main programs available to Houston buyers'}
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {dpaPrograms[language].map((program, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={programsInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-xl p-6 border border-brand-border"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="font-display text-lg text-deep-brown">{program.name}</h3>
-                      <p className="text-sm text-text-muted">{program.provider}</p>
-                    </div>
-                    <Star className="w-5 h-5 text-gold-accent" />
-                  </div>
-
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-4 h-4 text-gold-accent" />
-                      <span className="text-sm font-semibold text-deep-brown">{program.amount}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-gold-accent" />
-                      <span className="text-sm text-text-muted">{program.type}</span>
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <p className="text-xs font-semibold text-deep-brown mb-2">
-                      {isSpanish ? 'Requisitos:' : 'Requirements:'}
-                    </p>
-                    <ul className="space-y-1">
-                      {program.requirements.map((req, i) => (
-                        <li key={i} className="flex items-center gap-2 text-xs text-text-muted">
-                          <CheckCircle className="w-3 h-3 text-gold-accent flex-shrink-0" />
-                          {req}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="pt-4 border-t border-brand-border">
-                    <p className="text-xs font-semibold text-deep-brown mb-2">
-                      {isSpanish ? 'Beneficios:' : 'Highlights:'}
-                    </p>
-                    <ul className="space-y-1">
-                      {program.highlights.map((highlight, i) => (
-                        <li key={i} className="flex items-center gap-2 text-xs text-green-700">
-                          <CheckCircle className="w-3 h-3 flex-shrink-0" />
-                          {highlight}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Income Limits Table Section */}
         <section ref={incomeRef} className="section-padding bg-warm-white">
           <div className="section-container">
@@ -723,7 +404,7 @@ export function DPAContent() {
             >
               <div className="text-center mb-8">
                 <h2 className="text-display-lg text-deep-brown mb-4">
-                  {isSpanish ? 'Límites de Ingresos 2024' : '2024 Income Limits'}
+                  {isSpanish ? 'Límites de Ingresos 2026' : '2026 Income Limits'}
                 </h2>
                 <p className="text-text-muted">
                   {isSpanish
@@ -828,59 +509,34 @@ export function DPAContent() {
           </div>
         </section>
 
-        {/* Calculator Section */}
-        <section ref={calculatorRef} className="section-padding bg-warm-white">
+        {/* See If You Qualify CTA Section */}
+        <section ref={qualifyCTARef} className="section-padding bg-deep-brown">
           <div className="section-container">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={calculatorInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6 }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={qualifyCTAInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="max-w-2xl mx-auto text-center"
+            >
+              <div className="w-16 h-16 rounded-full bg-gold-accent/20 flex items-center justify-center mx-auto mb-6">
+                <DollarSign className="w-8 h-8 text-gold-accent" />
+              </div>
+              <h2 className="text-display-lg text-cream mb-4">
+                {isSpanish ? '¿Quieres Saber Cuánto Puedes Calificar?' : 'Want to Know How Much You May Qualify For?'}
+              </h2>
+              <p className="text-warm-taupe/80 text-lg mb-8">
+                {isSpanish
+                  ? 'Daisy revisará tu situación y encontrará todos los programas de ayuda para los que podrías calificar.'
+                  : 'Daisy will review your situation and find all the assistance programs you may qualify for.'}
+              </p>
+              <Link
+                href="/contact?purpose=dpa"
+                className="inline-flex items-center gap-2 py-3 px-8 bg-gold-accent text-dark-footer rounded-xl font-semibold hover:bg-gold-accent/90 transition-colors"
               >
-                <h2 className="text-display-lg text-deep-brown mb-6">
-                  {isSpanish ? '¿Cuánta Ayuda Podrías Recibir?' : 'How Much Help Could You Get?'}
-                </h2>
-                <p className="text-text-muted mb-6">
-                  {isSpanish
-                    ? 'Usa esta calculadora para obtener una estimación aproximada de cuánta ayuda para el enganche podrías recibir basado en tu situación.'
-                    : 'Use this calculator to get a rough estimate of how much down payment assistance you could receive based on your situation.'}
-                </p>
-                <div className="space-y-4">
-                  {[
-                    {
-                      icon: HelpCircle,
-                      text: isSpanish
-                        ? 'Esta es solo una estimación — los montos reales varían'
-                        : 'This is just an estimate — actual amounts vary',
-                    },
-                    {
-                      icon: Phone,
-                      text: isSpanish
-                        ? 'Llama a Daisy para una evaluación precisa'
-                        : 'Call Daisy for an accurate assessment',
-                    },
-                    {
-                      icon: CheckCircle,
-                      text: isSpanish
-                        ? 'Muchos compradores califican para múltiples programas'
-                        : 'Many buyers qualify for multiple programs',
-                    },
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <item.icon className="w-5 h-5 text-gold-accent" />
-                      <span className="text-sm text-text-muted">{item.text}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={calculatorInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <DPACalculator language={language} />
-              </motion.div>
-            </div>
+                {isSpanish ? 'Ver Si Califico' : 'See If You Qualify'}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
           </div>
         </section>
 

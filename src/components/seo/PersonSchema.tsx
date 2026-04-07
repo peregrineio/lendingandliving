@@ -2,7 +2,7 @@ export function PersonSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Daisy Castro-Shahin',
+    name: 'Daisy Castro',
     jobTitle: 'Mortgage Loan Officer',
     worksFor: {
       '@type': 'Organization',

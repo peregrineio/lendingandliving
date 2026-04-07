@@ -2,7 +2,7 @@ export function LocalBusinessSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'FinancialService',
-    name: 'Lending & Living - Daisy Castro-Shahin',
+    name: 'Lending & Living - Daisy Castro',
     description: "Houston's bilingual mortgage loan officer. FHA, ITIN, down payment assistance, VA, USDA, and refinance loans.",
     url: 'https://lendingandliving.com',
     telephone: '832-894-7676',

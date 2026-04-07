@@ -33,7 +33,6 @@ const comparisonData = {
       ['Minimum Down Payment', '3.5%', '3-20%'],
       ['Minimum Credit Score', '580 (500 with 10% down)', '620+'],
       ['Mortgage Insurance', 'Required for life of loan', 'Removable at 80% LTV'],
-      ['Debt-to-Income Ratio', 'Up to 50%', 'Usually 43-45%'],
       ['Property Standards', 'Strict FHA requirements', 'More flexible'],
       ['Best For', 'First-time buyers, lower credit', 'Strong credit, larger down payment'],
     ],
@@ -44,7 +43,6 @@ const comparisonData = {
       ['Enganche Mínimo', '3.5%', '3-20%'],
       ['Puntaje de Crédito Mínimo', '580 (500 con 10% enganche)', '620+'],
       ['Seguro Hipotecario', 'Requerido por vida del préstamo', 'Removible al 80% LTV'],
-      ['Relación Deuda-Ingreso', 'Hasta 50%', 'Usualmente 43-45%'],
       ['Estándares de Propiedad', 'Requisitos estrictos FHA', 'Más flexible'],
       ['Mejor Para', 'Compradores primerizos, crédito bajo', 'Buen crédito, enganche mayor'],
     ],
@@ -125,7 +123,6 @@ const fhaRequirements = {
     'Minimum credit score of 580 (500 with 10% down)',
     '3.5% minimum down payment',
     'Steady employment history (2 years)',
-    'Debt-to-income ratio under 50%',
     'Property must meet FHA standards',
     'Primary residence only',
     'Valid Social Security Number',
@@ -135,7 +132,6 @@ const fhaRequirements = {
     'Puntaje de crédito mínimo de 580 (500 con 10% enganche)',
     '3.5% de enganche mínimo',
     'Historial de empleo estable (2 años)',
-    'Relación deuda-ingreso menor al 50%',
     'La propiedad debe cumplir estándares FHA',
     'Solo residencia principal',
     'Número de Seguro Social válido',
@@ -178,7 +174,11 @@ const faqData = {
     },
     {
       question: 'What are FHA loan limits in Houston?',
-      answer: 'FHA loan limits vary by county and are updated annually. For 2024, the FHA loan limit in Harris County is $472,030 for a single-family home. Higher limits apply to multi-family properties. Daisy can confirm the current limits for your target area.',
+      answer: 'FHA loan limits vary by county and are updated annually. For 2026, the FHA loan limit in Harris County is $524,225 for a single-family home. Higher limits apply to multi-family properties: $671,200 for duplexes, $811,275 for triplexes, and $1,008,300 for fourplexes. Daisy can confirm the current limits for your target area.',
+    },
+    {
+      question: 'Can I buy a duplex or triplex with an FHA loan?',
+      answer: 'Yes — FHA loans can be used to purchase multi-unit properties including duplexes (2 units), triplexes (3 units), and fourplexes (4 units), as long as you live in one of the units as your primary residence. This is one of the most powerful FHA benefits for buyers who want to start building wealth through real estate. The rental income from the other units can also help offset your mortgage payment. Contact Daisy to learn how this strategy could work for you.',
     },
     {
       question: 'Do FHA loans require mortgage insurance?',
@@ -212,7 +212,11 @@ const faqData = {
     },
     {
       question: '¿Cuáles son los límites de préstamos FHA en Houston?',
-      answer: 'Los límites de préstamos FHA varían por condado y se actualizan anualmente. Para 2024, el límite de préstamo FHA en el Condado Harris es $472,030 para una casa unifamiliar. Límites más altos aplican a propiedades multifamiliares. Daisy puede confirmar los límites actuales para tu área objetivo.',
+      answer: 'Los límites de préstamos FHA varían por condado y se actualizan anualmente. Para 2026, el límite de préstamo FHA en el Condado Harris es $524,225 para una casa unifamiliar. Límites más altos aplican a propiedades multifamiliares: $671,200 para dúplex, $811,275 para tríplex, y $1,008,300 para cuádruplex. Daisy puede confirmar los límites actuales para tu área objetivo.',
+    },
+    {
+      question: '¿Puedo comprar un dúplex o tríplex con un préstamo FHA?',
+      answer: 'Sí — los préstamos FHA se pueden usar para comprar propiedades de múltiples unidades, incluyendo dúplex (2 unidades), tríplex (3 unidades) y cuádruplex (4 unidades), siempre que vivas en una de las unidades como tu residencia principal. Esta es una de las ventajas más poderosas del FHA para compradores que quieren comenzar a construir riqueza a través de bienes raíces. Los ingresos de renta de las otras unidades también pueden ayudar a compensar tu pago hipotecario. Contacta a Daisy para conocer cómo esta estrategia puede funcionar para ti.',
     },
     {
       question: '¿Los préstamos FHA requieren seguro hipotecario?',
@@ -294,6 +298,7 @@ export function FHALoansContent() {
   const requirementsRef = useRef(null);
   const comparisonRef = useRef(null);
   const processRef = useRef(null);
+  const loanLimitsRef = useRef(null);
   const faqRef = useRef(null);
 
   const heroInView = useInView(heroRef, { once: true });
@@ -301,6 +306,7 @@ export function FHALoansContent() {
   const requirementsInView = useInView(requirementsRef, { once: true, margin: '-100px' });
   const comparisonInView = useInView(comparisonRef, { once: true, margin: '-100px' });
   const processInView = useInView(processRef, { once: true, margin: '-100px' });
+  const loanLimitsInView = useInView(loanLimitsRef, { once: true, margin: '-100px' });
   const faqInView = useInView(faqRef, { once: true, margin: '-100px' });
 
   return (
@@ -369,7 +375,7 @@ export function FHALoansContent() {
                 {[
                   { value: '3.5%', label: isSpanish ? 'Enganche' : 'Down' },
                   { value: '580', label: isSpanish ? 'Crédito Min.' : 'Min. Credit' },
-                  { value: '$472K', label: isSpanish ? 'Límite Houston' : 'Houston Limit' },
+                  { value: '$524K', label: isSpanish ? 'Límite 2026' : '2026 Limit' },
                 ].map((stat, index) => (
                   <div key={index} className="text-center">
                     <p className="text-2xl font-display font-bold text-gold-accent">{stat.value}</p>
@@ -583,8 +589,82 @@ export function FHALoansContent() {
           </div>
         </section>
 
+        {/* 2026 FHA Loan Limits Section */}
+        <section ref={loanLimitsRef} className="section-padding bg-warm-white">
+          <div className="section-container">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={loanLimitsInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-display-lg text-deep-brown mb-4">
+                {isSpanish ? 'Límites de Préstamos FHA 2026 — Área de Houston' : '2026 FHA Loan Limits — Houston Area'}
+              </h2>
+              <p className="text-lg text-text-muted max-w-2xl mx-auto">
+                {isSpanish
+                  ? 'Los límites de préstamos FHA son establecidos anualmente por HUD. Para 2026, los límites del área de Houston (Condado Harris) son:'
+                  : 'FHA loan limits are set annually by HUD. For 2026, the Houston-area (Harris County) FHA limits are:'}
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={loanLimitsInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="max-w-2xl mx-auto"
+            >
+              <div className="bg-white rounded-xl border border-brand-border overflow-hidden">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-cream">
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-deep-brown">
+                        {isSpanish ? 'Tipo de Propiedad' : 'Property Type'}
+                      </th>
+                      <th className="px-6 py-4 text-right text-sm font-semibold text-deep-brown">
+                        {isSpanish ? 'Límite 2026' : '2026 Limit'}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-t border-brand-border">
+                      <td className="px-6 py-4 text-sm text-text-body">
+                        {isSpanish ? 'Casa Unifamiliar (1 Unidad)' : 'Single Family (1 Unit)'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$524,225</td>
+                    </tr>
+                    <tr className="border-t border-brand-border bg-cream/50">
+                      <td className="px-6 py-4 text-sm text-text-body">
+                        {isSpanish ? 'Dúplex (2 Unidades)' : 'Duplex (2 Units)'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$671,200</td>
+                    </tr>
+                    <tr className="border-t border-brand-border">
+                      <td className="px-6 py-4 text-sm text-text-body">
+                        {isSpanish ? 'Tríplex (3 Unidades)' : 'Triplex (3 Units)'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$811,275</td>
+                    </tr>
+                    <tr className="border-t border-brand-border bg-cream/50">
+                      <td className="px-6 py-4 text-sm text-text-body">
+                        {isSpanish ? 'Cuádruplex (4 Unidades)' : 'Fourplex (4 Units)'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$1,008,300</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-sm text-text-muted mt-4 text-center">
+                {isSpanish
+                  ? 'Estos límites representan el monto máximo del préstamo para una hipoteca asegurada por FHA en el área metropolitana de Houston. Propiedades con precios por encima de estos límites requerirían un tipo de préstamo diferente, como un préstamo convencional o jumbo.'
+                  : 'These limits represent the maximum loan amount for an FHA-insured mortgage in the Houston metropolitan area. Properties priced above these limits would require a different loan type such as a conventional or jumbo loan.'}
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
-        <section ref={faqRef} className="section-padding bg-warm-white">
+        <section ref={faqRef} className="section-padding bg-cream">
           <div className="section-container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

@@ -151,7 +151,7 @@ export async function sendLeadAutoReply(lead: LeadData): Promise<boolean> {
 
           <p style="color: #4A3728; font-size: 16px; line-height: 1.6; margin-top: 25px;">
             Con cariño,<br>
-            <strong style="color: #C9922A;">Daisy Castro-Shahin</strong><br>
+            <strong style="color: #C9922A;">Daisy Castro</strong><br>
             <em>Tu Oficial de Préstamos en Houston</em>
           </p>
         </div>
@@ -194,7 +194,7 @@ export async function sendLeadAutoReply(lead: LeadData): Promise<boolean> {
 
           <p style="color: #4A3728; font-size: 16px; line-height: 1.6; margin-top: 25px;">
             Warm regards,<br>
-            <strong style="color: #C9922A;">Daisy Castro-Shahin</strong><br>
+            <strong style="color: #C9922A;">Daisy Castro</strong><br>
             <em>Your Houston Mortgage Loan Officer</em>
           </p>
         </div>
@@ -215,7 +215,7 @@ export async function sendLeadAutoReply(lead: LeadData): Promise<boolean> {
 
   try {
     await resend.emails.send({
-      from: 'Daisy Castro-Shahin <daisy@lendingandliving.com>',
+      from: 'Daisy Castro <daisy@lendingandliving.com>',
       to: lead.email,
       subject,
       html: body,

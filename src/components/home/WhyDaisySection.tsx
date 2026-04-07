@@ -102,7 +102,7 @@ export function WhyDaisySection() {
                 <span className="text-6xl">👩🏻</span>
                 {/* <Image
                   src="/images/daisy-headshot.jpg"
-                  alt="Daisy Castro-Shahin"
+                  alt="Daisy Castro"
                   width={160}
                   height={160}
                   className="object-cover"
@@ -117,7 +117,7 @@ export function WhyDaisySection() {
               </blockquote>
               <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
                 <p className="font-display text-lg text-gold-accent font-semibold">
-                  Daisy Castro-Shahin
+                  Daisy Castro
                 </p>
                 <span className="hidden md:block text-warm-taupe">|</span>
                 <p className="text-sm text-text-muted">

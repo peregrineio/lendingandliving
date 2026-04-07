@@ -3,14 +3,13 @@
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { Calculator, Home, DollarSign, Percent, Phone, ArrowRight, Info, MapPin } from 'lucide-react';
+import { Calculator, Home, DollarSign, Percent, Phone, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/lib/translations';
 
 // Smart default rates for Texas
 const TAX_RATE_DEFAULT = 0.025; // 2.5% of home value annually
 const INSURANCE_RATE_DEFAULT = 0.010; // 1.0% of home value annually
-const HOMESTEAD_REDUCTION = 0.20; // 20% reduction for homestead exemption
 
 // Mortgage Payment Calculator with PITI breakdown
 function MortgageCalculator({ language }: { language: 'en' | 'es' }) {
@@ -21,14 +20,6 @@ function MortgageCalculator({ language }: { language: 'en' | 'es' }) {
   const [downPaymentPercent, setDownPaymentPercent] = useState('3.5');
   const [interestRate, setInterestRate] = useState('6.5');
   const [loanTerm, setLoanTerm] = useState('30');
-
-  // Toggle states
-  const [showAddressInput, setShowAddressInput] = useState(false);
-  const [applyHomestead, setApplyHomestead] = useState(false);
-  const [propertyAddress, setPropertyAddress] = useState('');
-
-  // Tooltip visibility
-  const [showHomesteadTooltip, setShowHomesteadTooltip] = useState(false);
 
   const price = parseFloat(homePrice.replace(/,/g, '')) || 0;
 
@@ -70,14 +61,11 @@ function MortgageCalculator({ language }: { language: 'en' | 'es' }) {
   }
 
   // Calculate taxes and insurance
-  const taxableValue = applyHomestead ? price * (1 - HOMESTEAD_REDUCTION) : price;
-  const monthlyTax = (taxableValue * TAX_RATE_DEFAULT) / 12;
-  const monthlyTaxWithoutHomestead = (price * TAX_RATE_DEFAULT) / 12;
+  const monthlyTax = (price * TAX_RATE_DEFAULT) / 12;
   const monthlyInsurance = (price * INSURANCE_RATE_DEFAULT) / 12;
 
   // Total PITI
   const totalPayment = monthlyPI + monthlyTax + monthlyInsurance;
-  const totalPaymentWithoutHomestead = monthlyPI + monthlyTaxWithoutHomestead + monthlyInsurance;
 
   const formatCurrency = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
 
@@ -162,70 +150,6 @@ function MortgageCalculator({ language }: { language: 'en' | 'es' }) {
               <option value="15">15 {t.years}</option>
             </select>
           </div>
-
-          {/* Toggles */}
-          <div className="space-y-3 pt-2">
-            {/* Homestead Toggle */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-deep-brown">{t.toggleHomestead}</span>
-                <button
-                  onClick={() => setShowHomesteadTooltip(!showHomesteadTooltip)}
-                  className="text-text-muted hover:text-gold-accent"
-                >
-                  <Info className="w-4 h-4" />
-                </button>
-              </div>
-              <button
-                onClick={() => setApplyHomestead(!applyHomestead)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${applyHomestead ? 'bg-gold-accent' : 'bg-gray-300'}`}
-              >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${applyHomestead ? 'translate-x-6' : 'translate-x-1'}`} />
-              </button>
-            </div>
-            {showHomesteadTooltip && (
-              <div className="text-xs text-text-muted bg-white p-3 rounded-lg border border-brand-border">
-                {t.homesteadTooltip}
-              </div>
-            )}
-
-            {/* Accurate Numbers Toggle */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-deep-brown">{t.toggleAccurate}</span>
-              <button
-                onClick={() => setShowAddressInput(!showAddressInput)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showAddressInput ? 'bg-gold-accent' : 'bg-gray-300'}`}
-              >
-                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showAddressInput ? 'translate-x-6' : 'translate-x-1'}`} />
-              </button>
-            </div>
-
-            {/* Address Input (when toggle is on) */}
-            {showAddressInput && (
-              <div className="space-y-2">
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-                  <input
-                    type="text"
-                    value={propertyAddress}
-                    onChange={(e) => setPropertyAddress(e.target.value)}
-                    placeholder={t.addressPlaceholder}
-                    className="w-full pl-10 pr-4 py-2 rounded-lg border border-brand-border bg-white text-sm focus:ring-2 focus:ring-gold-accent/50 focus:border-gold-accent outline-none"
-                  />
-                </div>
-                <p className="text-xs text-text-muted">{t.addressNote}</p>
-                {propertyAddress && (
-                  <Link
-                    href={`/contact?purpose=payment-estimate&address=${encodeURIComponent(propertyAddress)}`}
-                    className="inline-flex items-center gap-2 text-sm bg-gold-accent text-dark-footer px-4 py-2 rounded-lg font-medium hover:bg-gold-accent/90 transition-colors"
-                  >
-                    {t.getExact}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-              </div>
-            )}
-          </div>
         </div>
 
         {/* Results Column */}
@@ -255,23 +179,6 @@ function MortgageCalculator({ language }: { language: 'en' | 'es' }) {
               </div>
             </div>
           </div>
-
-          {/* Homestead Comparison (when toggle is on) */}
-          {applyHomestead && (
-            <div className="bg-cream/50 rounded-lg p-4 mb-4 space-y-2">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-text-muted">{t.withoutHomestead}:</span>
-                <span className="font-medium">{formatCurrency(totalPaymentWithoutHomestead)}/mo</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gold-accent font-medium">{t.withHomestead}:</span>
-                <span className="font-bold text-gold-accent">{formatCurrency(totalPayment)}/mo</span>
-              </div>
-              <div className="text-xs text-green-600 font-medium pt-1">
-                {language === 'es' ? 'Ahorras' : 'You save'} {formatCurrency(totalPaymentWithoutHomestead - totalPayment)}/mo
-              </div>
-            </div>
-          )}
 
           {/* Loan Amount Info */}
           <div className="text-sm text-text-muted mt-auto">

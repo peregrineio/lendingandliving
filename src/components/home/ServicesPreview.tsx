@@ -13,6 +13,7 @@ import {
   TrendingUp,
   Users,
   ArrowRight,
+  Wheat,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -49,6 +50,12 @@ const services = [
     titleKey: 'va_title',
     descKey: 'va_desc',
     href: '/services/va-loans-houston',
+  },
+  {
+    icon: Wheat,
+    titleKey: 'usda_title',
+    descKey: 'usda_desc',
+    href: '/services/usda-loans-houston',
   },
   {
     icon: RefreshCw,

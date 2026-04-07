@@ -33,7 +33,7 @@ export function getAllPosts(): BlogPostMeta[] {
       date: data.date || new Date().toISOString(),
       category: data.category || 'general',
       tags: data.tags || [],
-      author: data.author || 'Daisy Castro-Shahin',
+      author: data.author || 'Daisy Castro',
       readTime: data.readTime || `${Math.ceil(stats.minutes)} min`,
     };
   });
@@ -65,7 +65,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
         date: data.date || new Date().toISOString(),
         category: data.category || 'general',
         tags: data.tags || [],
-        author: data.author || 'Daisy Castro-Shahin',
+        author: data.author || 'Daisy Castro',
         readTime: data.readTime || `${Math.ceil(stats.minutes)} min`,
         content,
       };
