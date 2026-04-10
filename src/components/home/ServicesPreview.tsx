@@ -55,7 +55,7 @@ const standardServices = [
     icon: CreditCard,
     titleKey: 'conventional_title',
     descKey: 'conventional_desc',
-    href: '/services',
+    href: '/services/conventional-loans-houston',
   },
   {
     icon: Shield,

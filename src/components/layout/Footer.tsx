@@ -190,8 +190,18 @@ export function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-3 text-warm-taupe/60 text-sm">
               <div className="w-8 h-8 flex items-center justify-center">
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                  <path d="M12 3L2 9v12h20V9L12 3zm0 2.17l8 4.8V19H4V9.97l8-4.8zM12 11c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 100 120"
+                  className="w-6 h-6"
+                  aria-label="Equal Housing Opportunity"
+                  fill="currentColor"
+                >
+                  {/* House shape */}
+                  <polygon points="50,5 95,45 80,45 80,95 20,95 20,45 5,45" />
+                  {/* Equal sign — two horizontal bars inside house */}
+                  <rect x="32" y="55" width="36" height="8" fill="#1E1E1E" />
+                  <rect x="32" y="70" width="36" height="8" fill="#1E1E1E" />
                 </svg>
               </div>
               <span>Equal Housing Opportunity</span>

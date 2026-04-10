@@ -13,6 +13,9 @@ import {
   ArrowRight,
   Building,
   Award,
+  Gift,
+  Clock,
+  ArrowRightLeft,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import {
@@ -22,19 +25,41 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-// Income limits table data (Harris County)
-const incomeLimits = {
-  headers: {
-    en: ['Household Size', '80% AMI (Most Programs)', '115% AMI (TDHCA)'],
-    es: ['Tamaño del Hogar', '80% AMI (Mayoría de Programas)', '115% AMI (TDHCA)'],
-  },
-  rows: [
-    ['1', '$62,500', '$89,700'],
-    ['2', '$71,400', '$102,500'],
-    ['3', '$80,350', '$115,300'],
-    ['4', '$89,250', '$128,100'],
-    ['5', '$96,400', '$138,350'],
-    ['6+', '$103,550', '$148,600'],
+// Types of DPA data
+const dpaTypes = {
+  en: [
+    {
+      icon: Gift,
+      title: 'Grants',
+      desc: 'Do not need to be repaid.',
+    },
+    {
+      icon: Clock,
+      title: 'Forgivable Loans',
+      desc: 'Forgiven after a certain period of time (ex: 3, 5, or 10 years).',
+    },
+    {
+      icon: ArrowRightLeft,
+      title: 'Deferred Loans',
+      desc: 'No payments required — repaid when you sell or refinance.',
+    },
+  ],
+  es: [
+    {
+      icon: Gift,
+      title: 'Subvenciones (Grants)',
+      desc: 'No necesitan ser reembolsadas.',
+    },
+    {
+      icon: Clock,
+      title: 'Préstamos Perdonables',
+      desc: 'Se perdonan después de cierto tiempo (ej: 3, 5 o 10 años).',
+    },
+    {
+      icon: ArrowRightLeft,
+      title: 'Préstamos Diferidos',
+      desc: 'Sin pagos — se reembolsan cuando vendes o refinancias.',
+    },
   ],
 };
 
@@ -229,14 +254,14 @@ export function DPAContent() {
   const { language, isSpanish } = useLanguage();
   const heroRef = useRef(null);
   const whatIsRef = useRef(null);
-  const incomeRef = useRef(null);
+  const typesRef = useRef(null);
   const mythsRef = useRef(null);
   const qualifyCTARef = useRef(null);
   const faqRef = useRef(null);
 
   const heroInView = useInView(heroRef, { once: true });
   const whatIsInView = useInView(whatIsRef, { once: true, margin: '-100px' });
-  const incomeInView = useInView(incomeRef, { once: true, margin: '-100px' });
+  const typesInView = useInView(typesRef, { once: true, margin: '-100px' });
   const mythsInView = useInView(mythsRef, { once: true, margin: '-100px' });
   const qualifyCTAInView = useInView(qualifyCTARef, { once: true, margin: '-100px' });
   const faqInView = useInView(faqRef, { once: true, margin: '-100px' });
@@ -393,63 +418,37 @@ export function DPAContent() {
           </div>
         </section>
 
-        {/* Income Limits Table Section */}
-        <section ref={incomeRef} className="section-padding bg-warm-white">
+        {/* Types of DPA Section */}
+        <section ref={typesRef} className="section-padding bg-warm-white">
           <div className="section-container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={incomeInView ? { opacity: 1, y: 0 } : {}}
+              animate={typesInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
-              className="max-w-3xl mx-auto"
+              className="text-center mb-12"
             >
-              <div className="text-center mb-8">
-                <h2 className="text-display-lg text-deep-brown mb-4">
-                  {isSpanish ? 'Límites de Ingresos 2026' : '2026 Income Limits'}
-                </h2>
-                <p className="text-text-muted">
-                  {isSpanish
-                    ? 'Condado Harris / Área Metropolitana de Houston'
-                    : 'Harris County / Houston Metro Area'}
-                </p>
-              </div>
-
-              <div className="bg-white rounded-xl border border-brand-border overflow-hidden">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-cream">
-                      {incomeLimits.headers[language].map((header, i) => (
-                        <th
-                          key={i}
-                          className="px-4 py-3 text-left text-sm font-semibold text-deep-brown"
-                        >
-                          {header}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {incomeLimits.rows.map((row, i) => (
-                      <tr key={i} className="border-t border-brand-border">
-                        {row.map((cell, j) => (
-                          <td
-                            key={j}
-                            className={`px-4 py-3 text-sm ${j === 0 ? 'font-semibold text-deep-brown' : 'text-text-muted'}`}
-                          >
-                            {cell}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <p className="text-xs text-text-muted text-center mt-4">
-                {isSpanish
-                  ? '*AMI = Ingreso Medio del Área. Los límites pueden variar por programa. Contacta a Daisy para información actualizada.'
-                  : '*AMI = Area Median Income. Limits may vary by program. Contact Daisy for current information.'}
-              </p>
+              <h2 className="text-display-lg text-deep-brown mb-4">
+                {isSpanish ? 'Tipos de Ayuda para Enganche' : 'Types of Down Payment Assistance'}
+              </h2>
             </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              {dpaTypes[language].map((type, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={typesInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-cream rounded-xl p-6 text-center border border-brand-border"
+                >
+                  <div className="w-14 h-14 rounded-full bg-gold-accent/10 flex items-center justify-center mx-auto mb-4">
+                    <type.icon className="w-7 h-7 text-gold-accent" />
+                  </div>
+                  <h3 className="font-display text-xl text-gold-accent mb-2">{type.title}</h3>
+                  <p className="text-text-muted">{type.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 

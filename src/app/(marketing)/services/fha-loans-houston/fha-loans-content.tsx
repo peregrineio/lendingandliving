@@ -174,7 +174,7 @@ const faqData = {
     },
     {
       question: 'What are FHA loan limits in Houston?',
-      answer: 'FHA loan limits vary by county and are updated annually. For 2026, the FHA loan limit in Harris County is $524,225 for a single-family home. Higher limits apply to multi-family properties: $671,200 for duplexes, $811,275 for triplexes, and $1,008,300 for fourplexes. Daisy can confirm the current limits for your target area.',
+      answer: 'FHA loan limits vary by county and are updated annually. For 2026, the FHA loan limit in Harris County is $541,287 for a single-family home. Higher limits apply to multi-family properties: $693,050 for duplexes, $837,700 for triplexes, and $1,041,125 for fourplexes. Daisy can confirm the current limits for your target area.',
     },
     {
       question: 'Can I buy a duplex or triplex with an FHA loan?',
@@ -212,7 +212,7 @@ const faqData = {
     },
     {
       question: '¿Cuáles son los límites de préstamos FHA en Houston?',
-      answer: 'Los límites de préstamos FHA varían por condado y se actualizan anualmente. Para 2026, el límite de préstamo FHA en el Condado Harris es $524,225 para una casa unifamiliar. Límites más altos aplican a propiedades multifamiliares: $671,200 para dúplex, $811,275 para tríplex, y $1,008,300 para cuádruplex. Daisy puede confirmar los límites actuales para tu área objetivo.',
+      answer: 'Los límites de préstamos FHA varían por condado y se actualizan anualmente. Para 2026, el límite de préstamo FHA en el Condado Harris es $541,287 para una casa unifamiliar. Límites más altos aplican a propiedades multifamiliares: $693,050 para dúplex, $837,700 para tríplex, y $1,041,125 para cuádruplex. Daisy puede confirmar los límites actuales para tu área objetivo.',
     },
     {
       question: '¿Puedo comprar un dúplex o tríplex con un préstamo FHA?',
@@ -375,7 +375,7 @@ export function FHALoansContent() {
                 {[
                   { value: '3.5%', label: isSpanish ? 'Enganche' : 'Down' },
                   { value: '580', label: isSpanish ? 'Crédito Min.' : 'Min. Credit' },
-                  { value: '$524K', label: isSpanish ? 'Límite 2026' : '2026 Limit' },
+                  { value: '$541K', label: isSpanish ? 'Límite 2026' : '2026 Limit' },
                 ].map((stat, index) => (
                   <div key={index} className="text-center">
                     <p className="text-2xl font-display font-bold text-gold-accent">{stat.value}</p>
@@ -599,7 +599,9 @@ export function FHALoansContent() {
               className="text-center mb-12"
             >
               <h2 className="text-display-lg text-deep-brown mb-4">
-                {isSpanish ? 'Límites de Préstamos FHA 2026 — Área de Houston' : '2026 FHA Loan Limits — Houston Area'}
+                {isSpanish
+                  ? 'Límites de Préstamos FHA 2026 — Área de Houston (Condado de Harris) — Vigentes desde el 1 de enero de 2026'
+                  : '2026 FHA Loan Limits — Houston Area (Harris County) — Effective January 1, 2026'}
               </h2>
               <p className="text-lg text-text-muted max-w-2xl mx-auto">
                 {isSpanish
@@ -631,25 +633,25 @@ export function FHALoansContent() {
                       <td className="px-6 py-4 text-sm text-text-body">
                         {isSpanish ? 'Casa Unifamiliar (1 Unidad)' : 'Single Family (1 Unit)'}
                       </td>
-                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$524,225</td>
+                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$541,287</td>
                     </tr>
                     <tr className="border-t border-brand-border bg-cream/50">
                       <td className="px-6 py-4 text-sm text-text-body">
                         {isSpanish ? 'Dúplex (2 Unidades)' : 'Duplex (2 Units)'}
                       </td>
-                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$671,200</td>
+                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$693,050</td>
                     </tr>
                     <tr className="border-t border-brand-border">
                       <td className="px-6 py-4 text-sm text-text-body">
                         {isSpanish ? 'Tríplex (3 Unidades)' : 'Triplex (3 Units)'}
                       </td>
-                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$811,275</td>
+                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$837,700</td>
                     </tr>
                     <tr className="border-t border-brand-border bg-cream/50">
                       <td className="px-6 py-4 text-sm text-text-body">
                         {isSpanish ? 'Cuádruplex (4 Unidades)' : 'Fourplex (4 Units)'}
                       </td>
-                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$1,008,300</td>
+                      <td className="px-6 py-4 text-sm text-right font-semibold text-gold-accent">$1,041,125</td>
                     </tr>
                   </tbody>
                 </table>

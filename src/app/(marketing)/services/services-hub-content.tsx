@@ -41,7 +41,7 @@ const services = [
     icon: CreditCard,
     titleKey: 'conventional_title',
     descKey: 'conventional_desc',
-    href: '/services',
+    href: '/services/conventional-loans-houston',
     whoFor: {
       en: 'Strong credit, larger down payments, avoiding PMI',
       es: 'Buen crédito, enganche mayor, evitar PMI',

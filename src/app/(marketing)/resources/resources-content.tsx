@@ -290,7 +290,7 @@ function AffordabilityCalculator({ language }: { language: 'en' | 'es' }) {
         </div>
       </div>
 
-      <Link href="/contact" className="inline-flex items-center gap-1 text-sm text-gold-accent hover:underline mt-4">
+      <Link href="/contact?purpose=dti-review" className="inline-flex items-center gap-1 text-sm text-gold-accent hover:underline mt-4">
         {language === 'es' ? 'Habla con Daisy sobre tus números →' : 'Talk to Daisy about your numbers →'}
       </Link>
     </div>
@@ -325,7 +325,7 @@ function DTICalculator({ language }: { language: 'en' | 'es' }) {
   const getMessage = () => {
     if (dti <= 36) return language === 'es' ? '¡Excelente! Tu DTI está en buen rango.' : 'Excellent! Your DTI is in good range.';
     if (dti <= 43) return language === 'es' ? 'Aceptable, pero podrías tener opciones limitadas.' : 'Acceptable, but you may have limited options.';
-    return language === 'es' ? 'Alto. Considera pagar deudas antes de comprar.' : 'High. Consider paying down debts before buying.';
+    return language === 'es' ? 'Mayor que los lineamientos típicos — pero aún puedes calificar dependiendo del programa de préstamo. Revisemos tus opciones.' : "Higher than typical guidelines — but you may still qualify depending on the loan program. Let's review your options.";
   };
 
   return (
@@ -402,7 +402,7 @@ function DTICalculator({ language }: { language: 'en' | 'es' }) {
         </div>
       </div>
 
-      <Link href="/contact" className="inline-flex items-center gap-1 text-sm text-gold-accent hover:underline mt-4">
+      <Link href="/contact?purpose=dti-review" className="inline-flex items-center gap-1 text-sm text-gold-accent hover:underline mt-4">
         {language === 'es' ? 'Habla con Daisy sobre tus números →' : 'Talk to Daisy about your numbers →'}
       </Link>
     </div>
@@ -444,53 +444,42 @@ export function ResourcesContent() {
         </div>
       </section>
 
-      {/* Homebuyer Guide Section */}
+      {/* Homebuyer Guide Download Section */}
       <section id="homebuyer-guide" className="section-padding bg-cream">
         <div className="section-container">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 md:p-12 border border-brand-border">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gold-accent/10 flex items-center justify-center">
-                      <BookOpen className="w-6 h-6 text-gold-accent" />
-                    </div>
-                    <h2 className="font-display text-2xl text-deep-brown">
-                      {isSpanish ? 'Guía para Compradores Primerizos' : 'First-Time Homebuyer Guide'}
-                    </h2>
-                  </div>
-                  <p className="text-text-muted mb-6">
-                    {isSpanish
-                      ? 'Todo lo que necesitas saber para comprar tu primera casa en Houston. Desde pre-aprobación hasta cierre, te guiamos en cada paso.'
-                      : 'Everything you need to know to buy your first home in Houston. From pre-approval to closing, we guide you every step of the way.'}
-                  </p>
-                  <ul className="space-y-2 mb-6">
-                    {[
-                      isSpanish ? 'Lista de verificación paso a paso' : 'Step-by-step checklist',
-                      isSpanish ? 'Opciones de préstamos explicadas' : 'Loan options explained',
-                      isSpanish ? 'Errores comunes a evitar' : 'Common mistakes to avoid',
-                      isSpanish ? 'Programas de ayuda para enganche' : 'Down payment assistance programs',
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-text-muted">
-                        <CheckCircle className="w-4 h-4 text-gold-accent flex-shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href="/services/first-time-homebuyer-houston"
-                    className="inline-flex items-center gap-2 bg-gold-accent text-dark-footer px-6 py-3 rounded-xl font-semibold hover:bg-gold-accent/90 transition-colors"
-                  >
-                    {isSpanish ? 'Ver la Guía Completa' : 'View Complete Guide'}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-                <div className="hidden md:flex items-center justify-center">
-                  <div className="w-48 h-48 rounded-full bg-gold-accent/10 flex items-center justify-center">
-                    <Download className="w-20 h-20 text-gold-accent/50" />
-                  </div>
-                </div>
+          <div className="max-w-xl mx-auto">
+            <div className="bg-cream rounded-2xl p-8 text-center border border-brand-border">
+              {/* Icon */}
+              <div className="w-16 h-16 rounded-full bg-gold-accent/10 flex items-center justify-center mx-auto mb-4">
+                <Download className="w-8 h-8 text-gold-accent" />
               </div>
+
+              {/* Title */}
+              <h3 className="font-display text-2xl text-deep-brown mb-2">
+                {isSpanish ? 'Guía Gratuita para Compradores Primerizos' : 'Free First-Time Homebuyer Guide'}
+              </h3>
+
+              {/* Description */}
+              <p className="text-text-muted mb-6 max-w-sm mx-auto">
+                {isSpanish
+                  ? 'Todo lo que necesitas saber antes de comprar tu primera casa — preparado por Daisy Castro.'
+                  : 'Everything you need to know before buying your first home — prepared by Daisy Castro.'}
+              </p>
+
+              {/* Download Button */}
+              <a
+                href={isSpanish ? '/downloads/homebuyer-guide-es.pdf' : '/downloads/homebuyer-guide-en.pdf'}
+                download={isSpanish ? 'Guia-Para-Compradores-Daisy-Castro.pdf' : 'Homebuyer-Guide-Daisy-Castro.pdf'}
+                className="inline-flex items-center gap-2 bg-gold-accent text-white font-dm font-semibold px-8 py-4 rounded-lg hover:bg-gold-accent/90 transition-colors"
+              >
+                <Download className="w-5 h-5" />
+                {isSpanish ? 'Descargar Guía Gratis' : 'Download Free Guide'}
+              </a>
+
+              {/* NMLS note */}
+              <p className="text-xs text-text-muted mt-4">
+                Daisy Castro | NMLS #2592627 | Matador Lending NMLS #1871433
+              </p>
             </div>
           </div>
         </div>

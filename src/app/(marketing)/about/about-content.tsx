@@ -76,7 +76,6 @@ export function AboutContent() {
   const bilingualRef = useRef(null);
   const credentialsRef = useRef(null);
   const promiseRef = useRef(null);
-  const galleryRef = useRef(null);
   const testimonialsRef = useRef(null);
 
   const heroInView = useInView(heroRef, { once: true });
@@ -84,7 +83,6 @@ export function AboutContent() {
   const bilingualInView = useInView(bilingualRef, { once: true, margin: '-100px' });
   const credentialsInView = useInView(credentialsRef, { once: true, margin: '-100px' });
   const promiseInView = useInView(promiseRef, { once: true, margin: '-100px' });
-  const galleryInView = useInView(galleryRef, { once: true, margin: '-100px' });
   const testimonialsInView = useInView(testimonialsRef, { once: true, margin: '-100px' });
 
   return (
@@ -223,48 +221,9 @@ export function AboutContent() {
           </div>
         </section>
 
-        {/* Photo Gallery */}
-        <section ref={galleryRef} className="section-padding bg-cream">
-          <div className="section-container">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={galleryInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="text-center mb-12">
-              <h2 className="text-display-lg text-deep-brown mb-4">{isSpanish ? 'Galería' : 'Gallery'}</h2>
-            </motion.div>
-            <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={galleryInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: 0 }} className="relative h-64 rounded-xl overflow-hidden">
-                <Image
-                  src="/images/DSC00179.png"
-                  alt="Daisy Castro — Mortgage Loan Officer Houston"
-                  fill
-                  className="object-cover"
-                />
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={galleryInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: 0.1 }} className="relative h-64 rounded-xl overflow-hidden">
-                <Image
-                  src="/images/DSC00185.jpg"
-                  alt="Daisy Castro — Houston TX"
-                  fill
-                  className="object-cover"
-                />
-              </motion.div>
-            </div>
-          </div>
-        </section>
+        {/* Gallery section removed — will be added later when Daisy provides photos */}
 
-        {/* Video Embed Placeholder */}
-        <section className="section-padding bg-warm-white">
-          <div className="section-container">
-            <div className="max-w-2xl mx-auto">
-              <div className="aspect-video bg-deep-brown/10 rounded-2xl flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-gold-accent/20 flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-gold-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                  </div>
-                  <p className="text-text-muted">{isSpanish ? 'Video de Introducción - Próximamente' : 'Intro Video - Coming Soon'}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Video section removed — will be added later when Daisy provides video */}
 
         {/* Testimonials */}
         <section ref={testimonialsRef} className="section-padding bg-cream">

@@ -29,7 +29,7 @@ const comparisonData = {
   en: {
     headers: ['', 'Conventional', 'Jumbo'],
     rows: [
-      ['2026 Loan Limit', 'Up to $806,500', 'Above $806,500'],
+      ['2026 Loan Limit', 'Up to $832,750', 'Above $832,750'],
       ['Down Payment', 'As low as 3%', 'Typically 10–20%'],
       ['Credit Score', '620+', 'Typically 700+'],
       ['PMI', 'May apply', 'Not required (with 20% down)'],
@@ -39,7 +39,7 @@ const comparisonData = {
   es: {
     headers: ['', 'Convencional', 'Jumbo'],
     rows: [
-      ['Límite de Préstamo 2026', 'Hasta $806,500', 'Más de $806,500'],
+      ['Límite de Préstamo 2026', 'Hasta $832,750', 'Más de $832,750'],
       ['Enganche', 'Desde 3%', 'Típicamente 10–20%'],
       ['Puntaje de Crédito', '620+', 'Típicamente 700+'],
       ['PMI', 'Puede aplicar', 'No requerido (con 20% enganche)'],
@@ -121,7 +121,7 @@ const faqData = {
   en: [
     {
       question: 'What is the jumbo loan limit in Houston for 2026?',
-      answer: 'For 2026, the conforming loan limit is $806,500 for single-family homes in most areas including Houston. Any loan amount above this requires a jumbo loan. For multi-unit properties, the limits are higher — contact Daisy for specifics.',
+      answer: 'For 2026, the conforming loan limit is $832,750 for single-family homes in most areas including Houston. Any loan amount above this requires a jumbo loan. For multi-unit properties, the limits are higher — contact Daisy for specifics.',
     },
     {
       question: 'What credit score do I need for a jumbo loan?',
@@ -147,7 +147,7 @@ const faqData = {
   es: [
     {
       question: '¿Cuál es el límite del préstamo jumbo en Houston para 2026?',
-      answer: 'Para 2026, el límite de préstamo conforme es $806,500 para casas unifamiliares en la mayoría de áreas incluyendo Houston. Cualquier monto por encima de esto requiere un préstamo jumbo. Para propiedades de múltiples unidades, los límites son más altos — contacta a Daisy para más detalles.',
+      answer: 'Para 2026, el límite de préstamo conforme es $832,750 para casas unifamiliares en la mayoría de áreas incluyendo Houston. Cualquier monto por encima de esto requiere un préstamo jumbo. Para propiedades de múltiples unidades, los límites son más altos — contacta a Daisy para más detalles.',
     },
     {
       question: '¿Qué puntaje de crédito necesito para un préstamo jumbo?',
@@ -232,7 +232,7 @@ export function JumboLoansContent() {
             {/* Quick Stats */}
             <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-cream/20">
               <div>
-                <p className="text-2xl md:text-3xl font-display text-gold-accent">$806,500+</p>
+                <p className="text-2xl md:text-3xl font-display text-gold-accent">$832,750+</p>
                 <p className="text-sm text-warm-taupe/70 mt-1">
                   {isSpanish ? 'Monto Mínimo' : 'Minimum Amount'}
                 </p>
@@ -269,8 +269,8 @@ export function JumboLoansContent() {
             <div className="prose prose-lg text-text-muted text-left">
               <p>
                 {isSpanish
-                  ? 'Un préstamo jumbo es una hipoteca que excede los límites de préstamo conforme establecidos por la Agencia Federal de Financiamiento de Vivienda (FHFA). Para 2026, el límite de préstamo conforme para la mayoría de las áreas es $806,500. Cualquier monto de préstamo por encima de este umbral se considera un préstamo "jumbo" y no puede ser comprado por Fannie Mae o Freddie Mac.'
-                  : 'A jumbo loan is a mortgage that exceeds the conforming loan limits set by the Federal Housing Finance Agency (FHFA). For 2026, the conforming loan limit for most areas is $806,500. Any loan amount above this threshold is considered a "jumbo" loan and cannot be purchased by Fannie Mae or Freddie Mac.'}
+                  ? 'Un préstamo jumbo es una hipoteca que excede los límites de préstamo conforme establecidos por la Agencia Federal de Financiamiento de Vivienda (FHFA). Para 2026, el límite de préstamo conforme para la mayoría de las áreas es $832,750. Cualquier monto de préstamo por encima de este umbral se considera un préstamo "jumbo" y no puede ser comprado por Fannie Mae o Freddie Mac.'
+                  : 'A jumbo loan is a mortgage that exceeds the conforming loan limits set by the Federal Housing Finance Agency (FHFA). For 2026, the conforming loan limit for most areas is $832,750. Any loan amount above this threshold is considered a "jumbo" loan and cannot be purchased by Fannie Mae or Freddie Mac.'}
               </p>
               <p>
                 {isSpanish

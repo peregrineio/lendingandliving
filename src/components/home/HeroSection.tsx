@@ -94,7 +94,7 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-dark-footer/90 via-deep-brown/75 to-deep-brown/50 pointer-events-none md:hidden" />
 
       <div className="relative z-10 section-container py-20 md:py-0">
-        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-16 items-center min-h-[calc(100vh-280px)]">
+        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-16 items-center min-h-[calc(100vh-320px)] pb-8 md:pb-12">
 
           <div className="space-y-8 text-center lg:text-left">
             <motion.p variants={fadeIn} initial="hidden" animate="visible" custom={0.1}
@@ -128,7 +128,7 @@ export function HeroSection() {
           </div>
 
           <motion.div variants={scaleIn} initial="hidden" animate="visible" custom={0.2}
-            className="relative flex justify-center lg:justify-end">
+            className="relative flex justify-center lg:justify-center">
             <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl overflow-hidden w-[240px] md:w-[280px]">
               <div className="relative aspect-square">
                 <Image

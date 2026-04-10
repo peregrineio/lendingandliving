@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { RelatedServices, itinRelatedServices } from '@/components/shared/RelatedServices';
 import { motion, useInView } from 'framer-motion';
 import {
@@ -712,21 +713,27 @@ export function ITINLoansContent() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={whyDaisyInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="bg-cream rounded-2xl p-8"
+                className="flex flex-col md:flex-row items-center gap-6 bg-cream rounded-2xl p-8"
               >
-                <div className="aspect-square bg-warm-taupe/30 rounded-xl flex items-center justify-center mb-6">
-                  <span className="text-text-muted text-sm">
-                    {isSpanish ? 'Foto de Daisy' : 'Daisy Photo'}
-                  </span>
+                <div className="flex-shrink-0">
+                  <Image
+                    src="/images/headshot.png"
+                    alt="Daisy Castro — ITIN Loan Specialist Houston"
+                    width={160}
+                    height={160}
+                    className="rounded-full object-cover object-top w-32 h-32 md:w-40 md:h-40 border-4 border-gold-accent/30 shadow-md"
+                  />
                 </div>
-                <blockquote className="font-cormorant italic text-xl text-deep-brown mb-4">
-                  {isSpanish
-                    ? '"Me especializo en ayudar a personas con ITIN a lograr ser dueños de su hogar. Has trabajado duro y construido una vida aquí — ser dueño de una casa debe ser parte de esa historia. Te guío en cada paso con claridad, paciencia y dedicación."'
-                    : '"I specialize in helping ITIN individuals navigate the path to homeownership. You\'ve worked hard and built a life here — owning a home should be part of that story. I\'ll guide you through every step with clarity, patience, and care."'}
-                </blockquote>
-                <p className="text-text-muted">
-                  — Daisy Castro, NMLS #2592627
-                </p>
+                <div>
+                  <blockquote className="font-cormorant italic text-xl text-deep-brown mb-4">
+                    {isSpanish
+                      ? '"Me especializo en ayudar a personas con ITIN a lograr ser dueños de su hogar. Has trabajado duro y construido una vida aquí — ser dueño de una casa debe ser parte de esa historia. Te guío en cada paso con claridad, paciencia y dedicación."'
+                      : '"I specialize in helping ITIN individuals navigate the path to homeownership. You\'ve worked hard and built a life here — owning a home should be part of that story. I\'ll guide you through every step with clarity, patience, and care."'}
+                  </blockquote>
+                  <p className="text-text-muted">
+                    — Daisy Castro, NMLS #2592627
+                  </p>
+                </div>
               </motion.div>
             </div>
           </div>
