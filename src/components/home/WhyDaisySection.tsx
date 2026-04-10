@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Home, Globe, FileText } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -95,18 +96,16 @@ export function WhyDaisySection() {
           className="bg-cream rounded-2xl p-8 md:p-12"
         >
           <div className="flex flex-col md:flex-row items-center gap-8">
-            {/* Photo placeholder */}
+            {/* Daisy's photo */}
             <div className="flex-shrink-0">
-              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-warm-taupe/50 border-4 border-gold-accent/20 flex items-center justify-center overflow-hidden">
-                {/* Placeholder - replace with actual image */}
-                <span className="text-6xl">👩🏻</span>
-                {/* <Image
-                  src="/images/daisy-headshot.jpg"
-                  alt="Daisy Castro"
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-gold-accent/30 overflow-hidden shadow-md">
+                <Image
+                  src="/images/Daisy.png"
+                  alt="Daisy Castro — Mortgage Loan Officer"
                   width={160}
                   height={160}
-                  className="object-cover"
-                /> */}
+                  className="object-cover object-top w-full h-full"
+                />
               </div>
             </div>
 
