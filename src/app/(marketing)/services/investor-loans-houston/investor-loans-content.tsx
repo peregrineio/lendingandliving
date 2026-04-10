@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { TrendingUp, CheckCircle, DollarSign, Phone, ArrowRight, Building, FileText, Banknote, PiggyBank, Users, Clock } from 'lucide-react';
+import { TrendingUp, CheckCircle, DollarSign, Phone, ArrowRight, Building, FileText, Banknote, PiggyBank, Users, Clock, Hammer, ClipboardCheck } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
@@ -25,22 +25,6 @@ const loanTypes = {
       features: ['No tax returns required', '12 or 24 month options', 'Personal or business statements', 'Investment properties OK'],
       requirements: '10-20% down, 12+ months statements, 660+ credit',
     },
-    {
-      icon: PiggyBank,
-      title: 'Asset-Based Loans',
-      subtitle: 'Asset Depletion',
-      desc: 'Qualify using liquid assets like stocks, bonds, and retirement accounts.',
-      features: ['No employment required', 'Use investment portfolios', 'Retirement accounts count', 'Good for retirees/high net worth'],
-      requirements: '20%+ down, significant liquid assets, 700+ credit',
-    },
-    {
-      icon: Banknote,
-      title: '1099 Income Loans',
-      subtitle: 'For Contractors & Freelancers',
-      desc: 'Use 1099 income to qualify without full tax returns.',
-      features: ['1099 forms only', 'No Schedule C required', '1-2 years 1099 history', 'Investment properties allowed'],
-      requirements: '10-20% down, 2 years 1099 history, 660+ credit',
-    },
   ],
   es: [
     {
@@ -59,23 +43,61 @@ const loanTypes = {
       features: ['Sin declaraciones de impuestos', 'Opciones de 12 o 24 meses', 'Estados personales o de negocio', 'Propiedades de inversión OK'],
       requirements: '10-20% enganche, 12+ meses de estados, crédito 660+',
     },
-    {
-      icon: PiggyBank,
-      title: 'Préstamos Basados en Activos',
-      subtitle: 'Agotamiento de Activos',
-      desc: 'Califica usando activos líquidos como acciones, bonos y cuentas de retiro.',
-      features: ['Sin empleo requerido', 'Usa portafolios de inversión', 'Cuentas de retiro cuentan', 'Bueno para retirados/alto patrimonio'],
-      requirements: '20%+ enganche, activos líquidos significativos, crédito 700+',
-    },
-    {
-      icon: Banknote,
-      title: 'Préstamos de Ingresos 1099',
-      subtitle: 'Para Contratistas e Independientes',
-      desc: 'Usa ingresos 1099 para calificar sin declaraciones de impuestos completas.',
-      features: ['Solo formularios 1099', 'Sin Schedule C requerido', '1-2 años de historial 1099', 'Propiedades de inversión permitidas'],
-      requirements: '10-20% enganche, 2 años historial 1099, crédito 660+',
-    },
   ],
+};
+
+// Fix & Flip / Hard Money Loan Data
+const fixAndFlipData = {
+  en: {
+    title: 'Fix & Flip Loans — Hard Money Financing for Investors',
+    intro: "If you're purchasing a property to renovate and resell, a fix & flip hard money loan gives you fast, flexible financing based on the property's value — not just your personal income. Perfect for experienced investors and first-time flippers alike.",
+    keyTermsTitle: 'Key Loan Terms',
+    keyTerms: [
+      'Up to 70% of ARV (After Repair Value — the future value after renovations)',
+      'Up to 85% of purchase price + rehab costs combined',
+      'Interest-only monthly payments during the loan term',
+      '12-month loan term (extensions available if needed)',
+    ],
+    docsTitle: 'Required Documents',
+    docs: [
+      'Sales contract',
+      'Credit report (620+ minimum — tri-merge required)',
+      'Construction / rehab budget',
+      '2 months bank statements (to demonstrate rehab funds availability)',
+      'List of properties you currently own (REO schedule or completed 1003 loan application)',
+      'LLC documents — if applicable (Operating Agreement or Articles of Incorporation)',
+      'Copy of valid ID(s)',
+      'Insurance policy (must be in place by closing)',
+      'Clear title commitment',
+    ],
+    cta: "Ready to Fund Your Next Flip? Let's Talk.",
+    ctaLink: '/contact?purpose=fix-and-flip',
+  },
+  es: {
+    title: 'Préstamos Fix & Flip — Financiamiento Hard Money para Inversionistas',
+    intro: 'Si estás comprando una propiedad para renovar y revender, un préstamo fix & flip hard money te da financiamiento rápido y flexible basado en el valor de la propiedad — no solo tus ingresos personales. Perfecto para inversionistas experimentados y flippers primerizos.',
+    keyTermsTitle: 'Términos Clave del Préstamo',
+    keyTerms: [
+      'Hasta 70% del ARV (Valor Después de Reparaciones — el valor futuro después de renovaciones)',
+      'Hasta 85% del precio de compra + costos de rehabilitación combinados',
+      'Pagos mensuales de solo interés durante el término del préstamo',
+      'Término de préstamo de 12 meses (extensiones disponibles si es necesario)',
+    ],
+    docsTitle: 'Documentos Requeridos',
+    docs: [
+      'Contrato de venta',
+      'Reporte de crédito (mínimo 620 — tri-merge requerido)',
+      'Presupuesto de construcción / rehabilitación',
+      '2 meses de estados de cuenta bancarios (para demostrar disponibilidad de fondos)',
+      'Lista de propiedades que posees actualmente (calendario REO o solicitud 1003 completada)',
+      'Documentos de LLC — si aplica (Acuerdo Operativo o Artículos de Incorporación)',
+      'Copia de identificación(es) válida(s)',
+      'Póliza de seguro (debe estar vigente para el cierre)',
+      'Compromiso de título limpio',
+    ],
+    cta: '¿Listo para Financiar Tu Próximo Flip? Hablemos.',
+    ctaLink: '/contact?purpose=fix-and-flip',
+  },
 };
 
 const whoIsItFor = {
@@ -115,13 +137,17 @@ export function InvestorLoansContent() {
   const { language, isSpanish } = useLanguage();
   const heroRef = useRef(null);
   const typesRef = useRef(null);
+  const fixFlipRef = useRef(null);
   const whoRef = useRef(null);
   const faqRef = useRef(null);
 
   const heroInView = useInView(heroRef, { once: true });
   const typesInView = useInView(typesRef, { once: true, margin: '-100px' });
+  const fixFlipInView = useInView(fixFlipRef, { once: true, margin: '-100px' });
   const whoInView = useInView(whoRef, { once: true, margin: '-100px' });
   const faqInView = useInView(faqRef, { once: true, margin: '-100px' });
+
+  const fixFlip = fixAndFlipData[language];
 
   return (
     <>
@@ -195,8 +221,89 @@ export function InvestorLoansContent() {
           </div>
         </section>
 
+        {/* Fix & Flip / Hard Money Section */}
+        <section ref={fixFlipRef} className="section-padding bg-cream">
+          <div className="section-container">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={fixFlipInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="max-w-4xl mx-auto"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-xl bg-gold-accent/10 flex items-center justify-center">
+                  <Hammer className="w-7 h-7 text-gold-accent" />
+                </div>
+                <h2 className="text-display-lg text-deep-brown">{fixFlip.title}</h2>
+              </div>
+
+              <p className="text-lg text-text-muted mb-8">{fixFlip.intro}</p>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                {/* Key Loan Terms Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={fixFlipInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="bg-white rounded-xl p-6 border border-brand-border"
+                >
+                  <h3 className="font-display text-xl text-deep-brown mb-4 flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 text-gold-accent" />
+                    {fixFlip.keyTermsTitle}
+                  </h3>
+                  <ul className="space-y-3">
+                    {fixFlip.keyTerms.map((term, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-text-muted">
+                        <CheckCircle className="w-4 h-4 text-gold-accent flex-shrink-0 mt-0.5" />
+                        {term}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+
+                {/* Required Documents Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={fixFlipInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="bg-white rounded-xl p-6 border border-brand-border"
+                >
+                  <h3 className="font-display text-xl text-deep-brown mb-4 flex items-center gap-2">
+                    <ClipboardCheck className="w-5 h-5 text-gold-accent" />
+                    {fixFlip.docsTitle}
+                  </h3>
+                  <ul className="space-y-2">
+                    {fixFlip.docs.map((doc, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-text-muted">
+                        <div className="w-4 h-4 rounded border border-brand-border mt-0.5 flex-shrink-0" />
+                        {doc}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </div>
+
+              {/* CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={fixFlipInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="text-center"
+              >
+                <Link
+                  href={fixFlip.ctaLink}
+                  className="inline-flex items-center gap-2 py-3 px-8 bg-gold-accent text-dark-footer rounded-xl font-semibold hover:bg-gold-accent/90 transition-colors"
+                >
+                  {fixFlip.cta}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Who Is It For */}
-        <section ref={whoRef} className="section-padding bg-cream">
+        <section ref={whoRef} className="section-padding bg-warm-white">
           <div className="section-container">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, x: -20 }} animate={whoInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>

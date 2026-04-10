@@ -20,6 +20,9 @@ import {
   AlertCircle,
   Download,
   Mail,
+  Award,
+  MapPin,
+  Briefcase,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import {
@@ -172,6 +175,30 @@ const loanOptions = {
       desc: 'Traditional financing with competitive rates. PMI removable at 80% LTV.',
       best: 'Credit scores 620+, larger down payment',
     },
+    {
+      name: 'VA Loans',
+      href: '/services/va-loans-houston',
+      icon: Award,
+      highlight: '0% Down',
+      desc: 'For eligible veterans, active-duty military, and surviving spouses. Zero down payment required and no private mortgage insurance (PMI). One of the best loan options available if you qualify.',
+      best: 'Veterans, active-duty military, surviving spouses',
+    },
+    {
+      name: 'USDA Loans',
+      href: '/services/usda-loans-houston',
+      icon: MapPin,
+      highlight: '0% Down',
+      desc: 'Zero down payment for buyers purchasing in eligible rural and suburban areas near Houston. Income limits apply. Great option for homes in Katy, Fulshear, Waller County, and surrounding areas.',
+      best: 'Buyers in eligible rural/suburban areas',
+    },
+    {
+      name: 'Non-Traditional Loans',
+      href: '/services/non-traditional-loans-houston',
+      icon: Briefcase,
+      highlight: 'Self-Employed',
+      desc: "If you're self-employed, a contractor, or your income doesn't fit the standard W-2 mold — options like Bank Statement loans, P&L loans, Asset-Based loans, 1099 loans, and WVOE loans may be right for you.",
+      best: 'Self-employed, contractors, non-W2 income',
+    },
   ],
   es: [
     {
@@ -205,6 +232,30 @@ const loanOptions = {
       highlight: '3-20% Enganche',
       desc: 'Financiamiento tradicional con tasas competitivas. PMI removible al 80% LTV.',
       best: 'Puntaje de crédito 620+, enganche mayor',
+    },
+    {
+      name: 'Préstamos VA',
+      href: '/services/va-loans-houston',
+      icon: Award,
+      highlight: '0% Enganche',
+      desc: 'Para veteranos elegibles, militares en servicio activo y cónyuges sobrevivientes. Sin enganche requerido y sin seguro hipotecario privado (PMI). Una de las mejores opciones si calificas.',
+      best: 'Veteranos, militares activos, cónyuges sobrevivientes',
+    },
+    {
+      name: 'Préstamos USDA',
+      href: '/services/usda-loans-houston',
+      icon: MapPin,
+      highlight: '0% Enganche',
+      desc: 'Sin enganche para compradores en áreas rurales y suburbanas elegibles cerca de Houston. Se aplican límites de ingresos. Excelente opción para casas en Katy, Fulshear, Waller County y áreas circundantes.',
+      best: 'Compradores en áreas rurales/suburbanas elegibles',
+    },
+    {
+      name: 'Préstamos No Tradicionales',
+      href: '/services/non-traditional-loans-houston',
+      icon: Briefcase,
+      highlight: 'Independientes',
+      desc: 'Si eres trabajador independiente, contratista, o tus ingresos no encajan en el molde estándar W-2 — opciones como préstamos de estado de cuenta bancario, P&L, basados en activos, 1099 y WVOE pueden ser para ti.',
+      best: 'Trabajadores independientes, contratistas, ingresos no-W2',
     },
   ],
 };

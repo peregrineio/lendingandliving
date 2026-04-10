@@ -29,7 +29,7 @@ export function TrustBar({ className = '', variant = 'default' }: TrustBarProps)
     <div className={`${baseClasses} ${variantClasses[variant]} ${className}`}>
       <span className="flex items-center gap-1">
         <Shield className={`w-3 h-3 ${iconClasses[variant]}`} />
-        NMLS #2461273
+        NMLS #2592627
       </span>
       <span className="flex items-center gap-1">
         <Home className={`w-3 h-3 ${iconClasses[variant]}`} />

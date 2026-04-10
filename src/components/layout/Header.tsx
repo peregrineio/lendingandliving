@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, ChevronDown } from 'lucide-react';
+import { Menu, ChevronDown, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { LanguageToggle } from '@/components/shared/LanguageToggle';
@@ -24,7 +25,8 @@ const serviceLinks = [
   { href: '/services/va-loans-houston', labelKey: 'va_title' },
   { href: '/services/refinance-houston', labelKey: 'refinance_title' },
   { href: '/services/investor-loans-houston', labelKey: 'investor_title' },
-  { href: '/services/first-time-homebuyer-houston', labelKey: 'nontraditional_title' },
+  { href: '/services/non-traditional-loans-houston', labelKey: 'nontraditional_title' },
+  { href: '/resources#homebuyer-guide', labelKey: 'homebuyerGuide', isResource: true },
 ];
 
 // Main nav links
@@ -74,14 +76,15 @@ export function Header() {
       <div className="section-container">
         <nav className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          {/* TODO: Replace with <Image src="/images/logo.png" alt="Lending & Living" width={120} height={60} priority className="h-12 w-auto" /> when Daisy provides logo files */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="font-display text-2xl md:text-3xl font-bold text-deep-brown group-hover:text-gold-accent transition-colors">
-              L&L
-            </span>
-            <span className="hidden sm:block font-body text-sm text-text-muted">
-              Lending & Living
-            </span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/bannertrans.png"
+              alt="My Texas Lender — Daisy Castro | Lending & Living"
+              width={200}
+              height={90}
+              priority
+              className="h-16 md:h-20 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -134,10 +137,18 @@ export function Header() {
                               <Link
                                 key={service.href}
                                 href={service.href}
-                                className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-cream transition-colors group"
+                                className={`flex items-center justify-between px-4 py-3 rounded-lg hover:bg-cream transition-colors group ${
+                                  service.isResource ? 'border-t border-brand-border mt-2 pt-4' : ''
+                                }`}
                               >
-                                <span className="text-sm font-medium text-text-body group-hover:text-gold-accent transition-colors">
-                                  {t(`services.${service.labelKey}`)}
+                                <span className="flex items-center gap-2 text-sm font-medium text-text-body group-hover:text-gold-accent transition-colors">
+                                  {service.isResource && (
+                                    <BookOpen className="w-4 h-4 text-gold-accent" />
+                                  )}
+                                  {service.isResource
+                                    ? (isSpanish ? 'Guía para Compradores' : 'Homebuyer Guide')
+                                    : t(`services.${service.labelKey}`)
+                                  }
                                 </span>
                                 {service.badge && (
                                   <span className="text-[10px] px-2 py-0.5 bg-gold-accent/10 text-gold-accent rounded-full font-medium">
@@ -203,9 +214,14 @@ export function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] bg-cream border-l border-brand-border flex flex-col h-full">
                 <SheetHeader className="text-left pb-6 border-b border-brand-border flex-shrink-0">
-                  <SheetTitle className="font-display text-2xl text-deep-brown">
-                    L&L
-                  </SheetTitle>
+                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                  <Image
+                    src="/images/bannertrans.png"
+                    alt="My Texas Lender — Daisy Castro | Lending & Living"
+                    width={160}
+                    height={70}
+                    className="h-14 w-auto object-contain"
+                  />
                 </SheetHeader>
 
                 <div className="py-6 space-y-2 flex-1 overflow-y-auto">

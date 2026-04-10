@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Phone, ArrowRight, Award, Shield, Users, Heart, Globe, CheckCircle, Star, Quote } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -114,8 +115,19 @@ export function AboutContent() {
                 </div>
               </motion.div>
               <motion.div initial={{ opacity: 0, x: 20 }} animate={heroInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.2 }} className="relative">
-                <div className="aspect-[4/5] bg-warm-taupe/30 rounded-2xl flex items-center justify-center">
-                  <span className="text-text-muted">{isSpanish ? 'Foto de Daisy' : 'Daisy Photo'}</span>
+                <div className="relative h-[400px] md:h-[500px] w-full rounded-2xl overflow-hidden">
+                  <Image
+                    src="/images/Daisy.png"
+                    alt="Daisy Castro — Houston Mortgage Loan Officer"
+                    fill
+                    className="object-cover object-top"
+                    priority
+                  />
+                  {/* Name overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark-footer/80 to-transparent p-6">
+                    <h2 className="font-playfair text-white text-3xl">Daisy Castro</h2>
+                    <p className="font-dm text-warm-taupe text-sm">Mortgage Loan Officer | NMLS #2592627</p>
+                  </div>
                 </div>
                 <div className="absolute -bottom-4 -left-4 bg-gold-accent text-dark-footer px-4 py-2 rounded-lg font-display text-sm">
                   NMLS #2592627
@@ -217,14 +229,24 @@ export function AboutContent() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={galleryInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="text-center mb-12">
               <h2 className="text-display-lg text-deep-brown mb-4">{isSpanish ? 'Galería' : 'Gallery'}</h2>
             </motion.div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((_, index) => (
-                <motion.div key={index} initial={{ opacity: 0, scale: 0.9 }} animate={galleryInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: index * 0.1 }} className="aspect-square bg-warm-taupe/30 rounded-xl flex items-center justify-center">
-                  <span className="text-text-muted text-sm">{isSpanish ? `Foto ${index + 1}` : `Photo ${index + 1}`}</span>
-                </motion.div>
-              ))}
+            <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={galleryInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: 0 }} className="relative h-64 rounded-xl overflow-hidden">
+                <Image
+                  src="/images/DSC00179.png"
+                  alt="Daisy Castro — Mortgage Loan Officer Houston"
+                  fill
+                  className="object-cover"
+                />
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={galleryInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: 0.1 }} className="relative h-64 rounded-xl overflow-hidden">
+                <Image
+                  src="/images/DSC00185.jpg"
+                  alt="Daisy Castro — Houston TX"
+                  fill
+                  className="object-cover"
+                />
+              </motion.div>
             </div>
-            <p className="text-center text-xs text-text-muted mt-4">{isSpanish ? 'Fotos profesionales próximamente' : 'Professional photos coming soon'}</p>
           </div>
         </section>
 

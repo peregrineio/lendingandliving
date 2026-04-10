@@ -141,7 +141,7 @@ const services = [
     icon: Users,
     titleKey: 'nontraditional_title',
     descKey: 'nontraditional_desc',
-    href: '/services',
+    href: '/services/non-traditional-loans-houston',
     whoFor: {
       en: 'Self-employed, gig workers, complex income',
       es: 'Auto-empleados, trabajadores independientes, ingresos complejos',

@@ -73,7 +73,7 @@ const services = [
     icon: Users,
     titleKey: 'nontraditional_title',
     descKey: 'nontraditional_desc',
-    href: '/services',
+    href: '/services/non-traditional-loans-houston',
   },
 ];
 

@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { Calculator, Home, DollarSign, Percent, Phone, ArrowRight } from 'lucide-react';
+import { Calculator, Home, DollarSign, Percent, Phone, ArrowRight, BookOpen, Download, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { translations } from '@/lib/translations';
 
@@ -441,6 +441,58 @@ export function ResourcesContent() {
             <AffordabilityCalculator language={language} />
             <DTICalculator language={language} />
           </motion.div>
+        </div>
+      </section>
+
+      {/* Homebuyer Guide Section */}
+      <section id="homebuyer-guide" className="section-padding bg-cream">
+        <div className="section-container">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-2xl p-8 md:p-12 border border-brand-border">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gold-accent/10 flex items-center justify-center">
+                      <BookOpen className="w-6 h-6 text-gold-accent" />
+                    </div>
+                    <h2 className="font-display text-2xl text-deep-brown">
+                      {isSpanish ? 'Guía para Compradores Primerizos' : 'First-Time Homebuyer Guide'}
+                    </h2>
+                  </div>
+                  <p className="text-text-muted mb-6">
+                    {isSpanish
+                      ? 'Todo lo que necesitas saber para comprar tu primera casa en Houston. Desde pre-aprobación hasta cierre, te guiamos en cada paso.'
+                      : 'Everything you need to know to buy your first home in Houston. From pre-approval to closing, we guide you every step of the way.'}
+                  </p>
+                  <ul className="space-y-2 mb-6">
+                    {[
+                      isSpanish ? 'Lista de verificación paso a paso' : 'Step-by-step checklist',
+                      isSpanish ? 'Opciones de préstamos explicadas' : 'Loan options explained',
+                      isSpanish ? 'Errores comunes a evitar' : 'Common mistakes to avoid',
+                      isSpanish ? 'Programas de ayuda para enganche' : 'Down payment assistance programs',
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-text-muted">
+                        <CheckCircle className="w-4 h-4 text-gold-accent flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/services/first-time-homebuyer-houston"
+                    className="inline-flex items-center gap-2 bg-gold-accent text-dark-footer px-6 py-3 rounded-xl font-semibold hover:bg-gold-accent/90 transition-colors"
+                  >
+                    {isSpanish ? 'Ver la Guía Completa' : 'View Complete Guide'}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+                <div className="hidden md:flex items-center justify-center">
+                  <div className="w-48 h-48 rounded-full bg-gold-accent/10 flex items-center justify-center">
+                    <Download className="w-20 h-20 text-gold-accent/50" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { LanguageToggle } from '@/components/shared/LanguageToggle';
@@ -68,14 +69,15 @@ export function Footer() {
           {/* Column 1: Brand */}
           <div className="space-y-6">
             <div>
-              {/* TODO: Replace with <Image src="/images/logo-white.png" alt="Lending & Living" width={120} height={60} className="h-10 w-auto" /> when Daisy provides logo files */}
-              <Link href="/" className="inline-block group">
-                <span className="font-display text-3xl font-bold text-cream group-hover:text-gold-accent transition-colors">
-                  L&L
-                </span>
-                <span className="block font-body text-sm text-warm-taupe/70 mt-1">
-                  Lending & Living
-                </span>
+              {/* Note: 1.png has white background with dark text. Using brightness-0 invert to make it white on dark footer. If transparent logo becomes available, remove the filter classes */}
+              <Link href="/">
+                <Image
+                  src="/images/1.png"
+                  alt="My Texas Lender — Daisy Castro | Lending & Living"
+                  width={180}
+                  height={80}
+                  className="h-16 w-auto object-contain brightness-0 invert opacity-90"
+                />
               </Link>
             </div>
             <p className="text-warm-taupe/80 text-sm leading-relaxed">

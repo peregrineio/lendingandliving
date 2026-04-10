@@ -212,7 +212,7 @@ export const translations: Translations = {
       subheadline: 'Helping first-time buyers and families achieve homeownership with clarity, care, and zero confusion.',
       cta_primary: 'Get Pre-Approved',
       cta_secondary: 'Which Loan Fits You Best?',
-      trust: 'NMLS #2461273 | Matador Lending | Equal Housing Opportunity',
+      trust: 'NMLS #2592627 | Matador Lending | Equal Housing Opportunity',
     },
     whyDaisy: {
       headline: 'A Loan Officer Who Actually Speaks Your Language',
@@ -400,7 +400,7 @@ export const translations: Translations = {
       subheadline: 'Ayudando a compradores por primera vez y familias a lograr ser dueños de casa, con claridad y sin confusión.',
       cta_primary: 'Obtén Pre-Aprobación',
       cta_secondary: '¿Qué Préstamo Es Para Ti?',
-      trust: 'NMLS #2461273 | Matador Lending | Oportunidad Igual de Vivienda',
+      trust: 'NMLS #2592627 | Matador Lending | Oportunidad Igual de Vivienda',
     },
     whyDaisy: {
       headline: 'Una Oficial de Préstamos Que Habla Tu Idioma',
