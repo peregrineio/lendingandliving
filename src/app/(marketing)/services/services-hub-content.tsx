@@ -157,8 +157,8 @@ const services = [
     descKey: 'jumbo_desc',
     href: '/services/jumbo-loans-houston',
     whoFor: {
-      en: 'High-value homes, luxury properties, above $806,500',
-      es: 'Casas de alto valor, propiedades de lujo, más de $806,500',
+      en: 'High-value homes, luxury properties, above $832,750',
+      es: 'Casas de alto valor, propiedades de lujo, más de $832,750',
     },
     requirements: {
       en: ['700+ credit score', '10-20% down payment', 'Strong income documentation'],

@@ -146,5 +146,45 @@ All foundational prompts completed:
 
 ---
 
-*Build Complete: Prompts 1-28 | Testing & Deploy: Prompts 29-32*
-*Last Updated: 2026-03-27*
+## Change Request Sessions
+
+### CR Session v3 (2026-04-07)
+**5 Change Requests — COMPLETE**
+- CR1: First-Time Buyer page — Added VA, USDA, Non-Traditional loans
+- CR2: Investor Loans page — Added Fix & Flip/Hard Money section
+- CR3: Non-Traditional Loans page — Full rebuild with 5 loan types
+- CR4: Navigation — Added Homebuyer Guide tab
+- CR5: Homepage — Fixed broken Non-Traditional link
+
+### CR Session v5 (2026-04-10)
+**15 Change Requests — COMPLETE**
+- CR1-CR2: Hero section spacing and photo centering
+- CR3: Conventional Loans page creation + link fix
+- CR4: "View Loan Options" text (already done)
+- CR5-CR6: DPA page updates (income table removed, types added)
+- CR7: FHA loan limits updated to 2026 ($541,287)
+- CR8: Daisy photo added to ITIN page
+- CR9: DTI calculator message improved
+- CR10-CR11: About page gallery/video removed
+- CR12: Jumbo loan limit updated ($832,750)
+- CR13: Equal Housing icon fixed
+- CR14: PDF homebuyer guide downloads wired up
+- CR15: 3 new blog posts added
+
+**Git Commit:** e6225a3
+
+### CR Session v6 (2026-04-14)
+**5 Change Requests — COMPLETE**
+- CR1: Footer Mortgage Calculator link → `/resources#mortgage-calculator`
+- CR2: Footer First-Time Buyer Guide link → `/resources#homebuyer-guide`
+- CR3: Footer logo replaced with Daisy's headshot + name/NMLS
+- CR4: Jumbo loan amount $806,500 → $832,750 (services hub + conventional page)
+- CR5: Blog posts now open in new tab
+
+**Files Modified:** 4
+**Build:** ✅ Successful
+
+---
+
+*Build Complete: Prompts 1-28 | CR Sessions: v3, v5, v6 Complete*
+*Last Updated: 2026-04-14*

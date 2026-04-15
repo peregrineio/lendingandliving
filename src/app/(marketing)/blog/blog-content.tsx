@@ -35,7 +35,12 @@ function BlogCard({ post, index }: { post: BlogPostMeta; index: number }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      <Link href={`/blog/${post.slug}`} className="group block">
+      <Link
+        href={`/blog/${post.slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group block"
+      >
         <div className="bg-white rounded-2xl border border-brand-border overflow-hidden hover:shadow-lg hover:border-gold-accent/30 transition-all duration-300">
           {/* Placeholder Image */}
           <div className="h-48 bg-gradient-to-br from-cream to-warm-taupe/30 relative overflow-hidden">

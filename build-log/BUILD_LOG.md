@@ -1,16 +1,68 @@
 # BUILD LOG — Lending & Living
 
 **Project:** DaisyLending / Lending & Living
-**Prompt Doc:** lending_living_change_requests_v3.md
-**Total Prompts:** 5
+**Current Prompt Doc:** lending_living_change_requests_v6.md
+**Total Sessions:** 5
 
 ---
 
-## Session: 2026-04-07 — Change Requests v3.0
+## Session: 2026-04-14 — Change Requests v6.0 ✅ COMPLETE
 
 ### Status
-- **Current Position:** Ready to start
-- **Last Completed:** None (new prompt doc)
+- **Current Position:** All 5 CRs Complete
+- **Build:** ✅ Successful
+
+### Summary
+Executed all 5 change requests from v6 document:
+- CR1: Fixed Footer Mortgage Calculator link → `/resources#mortgage-calculator`
+- CR2: Fixed Footer First-Time Buyer Guide link → `/resources#homebuyer-guide`
+- CR3: Replaced white square logo with Daisy's headshot + name/NMLS
+- CR4: Fixed Jumbo Loans amount $806,500 → $832,750 (6 occurrences)
+- CR5: Blog posts now open in new tab (`target="_blank"`)
+
+**Files Modified:** 4
+- `src/components/layout/Footer.tsx` (CR1, CR2, CR3)
+- `src/app/(marketing)/services/services-hub-content.tsx` (CR4)
+- `src/app/(marketing)/services/conventional-loans-houston/conventional-loans-content.tsx` (CR4)
+- `src/app/(marketing)/blog/blog-content.tsx` (CR5)
+
+**TypeScript:** ✅ No errors
+
+---
+
+## Session: 2026-04-10 — Change Requests v5.0 ✅ COMPLETE
+
+### Status
+- **Current Position:** All 15 CRs Complete
+- **Git Commit:** e6225a3
+
+### Summary
+Executed all 15 change requests from v5 document:
+- CR1-CR2: Hero section spacing and photo centering
+- CR3: Conventional loans page creation
+- CR4: Already done (View Loan Options)
+- CR5-CR6: DPA page updates (income table removed, types added)
+- CR7: FHA loan limits updated to 2026
+- CR8: Daisy photo on ITIN page
+- CR9: DTI calculator message update
+- CR10-CR11: About page gallery/video removed
+- CR12: Jumbo loan limit updated to $832,750
+- CR13: Equal Housing icon fixed
+- CR14: PDF downloads wired up
+- CR15: 3 new blog posts added
+
+**Files Created:** 7
+**Files Modified:** 12
+**TypeScript:** ✅ No errors
+
+[Full details: sessions/SESSION_2026-04-10_1.md]
+
+---
+
+## Session: 2026-04-07 — Change Requests v3.0 ✅ COMPLETE
+
+### Status
+- **Current Position:** All 5 CRs Complete
 
 ---
 
@@ -136,16 +188,19 @@
 
 ---
 
-## SESSION COMPLETE
+## Cumulative Statistics
 
-**All 5 Change Requests Completed:**
-1. ✅ CR1: First-Time Buyer page — Added VA, USDA, Non-Traditional loan options
-2. ✅ CR2: Investor Loans page — Removed Asset/1099, Added Fix & Flip/Hard Money section
-3. ✅ CR3: Non-Traditional Loans page — Full content rebuild with 5 loan types + FAQ
-4. ✅ CR4: Navigation — Added Homebuyer Guide tab, fixed Non-Traditional link
-5. ✅ CR5: Homepage — Fixed broken Non-Traditional link on services grid
+| Metric | v3 Session | v5 Session | v6 Session | Total |
+|--------|------------|------------|------------|-------|
+| Change Requests | 5 | 15 | 5 | 25 |
+| Files Created | 2 | 7 | 0 | 9 |
+| Files Modified | 7 | 12 | 4 | 23 |
+| TypeScript Errors | 0 | 0 | 0 | 0 |
 
-**Total Files Modified:** 9
-**Total Files Created:** 2
-**TypeScript:** ✅ No errors
+---
 
+## All Sessions
+1. [SESSION_2026-04-07_1.md](sessions/SESSION_2026-04-07_1.md) — v3 CRs 1-3
+2. [SESSION_2026-04-07_2.md](sessions/SESSION_2026-04-07_2.md) — v3 CRs 4-5
+3. [SESSION_2026-04-10_1.md](sessions/SESSION_2026-04-10_1.md) — v5 CRs 1-15
+4. 2026-04-14 — v6 CRs 1-5 (Footer fixes, Jumbo amount, Blog new tab)

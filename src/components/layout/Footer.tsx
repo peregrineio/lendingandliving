@@ -19,10 +19,10 @@ const serviceLinks = [
 
 // Resource links
 const resourceLinks = [
-  { href: '/resources/calculator', label: { en: 'Mortgage Calculator', es: 'Calculadora Hipotecaria' } },
+  { href: '/resources#mortgage-calculator', label: { en: 'Mortgage Calculator', es: 'Calculadora Hipotecaria' } },
   { href: '/resources', label: { en: 'Resource Center', es: 'Centro de Recursos' } },
   { href: '/blog', label: { en: 'Blog', es: 'Blog' } },
-  { href: '/resources/first-time-buyer-guide', label: { en: 'First-Time Buyer Guide', es: 'Guía para Compradores' } },
+  { href: '/resources#homebuyer-guide', label: { en: 'First-Time Buyer Guide', es: 'Guía para Compradores' } },
   { href: '/about', label: { en: 'About Daisy', es: 'Sobre Daisy' } },
 ];
 
@@ -68,17 +68,23 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Column 1: Brand */}
           <div className="space-y-6">
-            <div>
-              {/* Note: 1.png has white background with dark text. Using brightness-0 invert to make it white on dark footer. If transparent logo becomes available, remove the filter classes */}
-              <Link href="/">
+            <div className="flex items-center gap-4">
+              {/* Daisy's photo — circular, warm gold border */}
+              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gold-accent/50 flex-shrink-0">
                 <Image
-                  src="/images/1.png"
-                  alt="My Texas Lender — Daisy Castro | Lending & Living"
-                  width={180}
-                  height={80}
-                  className="h-16 w-auto object-contain brightness-0 invert opacity-90"
+                  src="/images/headshot.png"
+                  alt="Daisy Castro — Houston Mortgage Loan Officer"
+                  width={64}
+                  height={64}
+                  className="object-cover object-top w-full h-full"
                 />
-              </Link>
+              </div>
+              {/* Name + title */}
+              <div>
+                <p className="font-display text-lg text-gold-accent leading-tight">Daisy Castro</p>
+                <p className="text-xs text-warm-taupe/60">NMLS #2592627</p>
+                <p className="text-xs text-warm-taupe/60">Matador Lending</p>
+              </div>
             </div>
             <p className="text-warm-taupe/80 text-sm leading-relaxed">
               {t('footer.tagline')}

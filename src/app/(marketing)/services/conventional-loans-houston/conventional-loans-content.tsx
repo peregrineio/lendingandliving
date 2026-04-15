@@ -75,7 +75,7 @@ const conventionalBenefits = {
     {
       icon: DollarSign,
       title: 'Higher Loan Limits',
-      desc: '2026 conforming limit of $806,500 — higher than FHA limits.',
+      desc: '2026 conforming limit of $832,750 — higher than FHA limits.',
     },
     {
       icon: FileCheck,
@@ -107,7 +107,7 @@ const conventionalBenefits = {
     {
       icon: DollarSign,
       title: 'Límites de Préstamo Más Altos',
-      desc: 'Límite conforme de 2026 de $806,500 — más alto que los límites FHA.',
+      desc: 'Límite conforme de 2026 de $832,750 — más alto que los límites FHA.',
     },
     {
       icon: FileCheck,
@@ -198,7 +198,7 @@ const faqData = {
     },
     {
       question: 'What is the 2026 conventional loan limit in Houston?',
-      answer: 'The 2026 conforming loan limit for conventional loans in the Houston area is $806,500 for single-family homes. Loans above this amount are considered jumbo loans.',
+      answer: 'The 2026 conforming loan limit for conventional loans in the Houston area is $832,750 for single-family homes. Loans above this amount are considered jumbo loans.',
     },
     {
       question: 'Should I choose FHA or conventional?',
@@ -224,7 +224,7 @@ const faqData = {
     },
     {
       question: '¿Cuál es el límite de préstamo convencional 2026 en Houston?',
-      answer: 'El límite de préstamo conforme de 2026 para préstamos convencionales en el área de Houston es $806,500 para casas unifamiliares. Los préstamos por encima de esta cantidad se consideran préstamos jumbo.',
+      answer: 'El límite de préstamo conforme de 2026 para préstamos convencionales en el área de Houston es $832,750 para casas unifamiliares. Los préstamos por encima de esta cantidad se consideran préstamos jumbo.',
     },
     {
       question: '¿Debería elegir FHA o convencional?',
