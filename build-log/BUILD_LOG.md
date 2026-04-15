@@ -6,10 +6,10 @@
 
 ---
 
-## Session: 2026-04-14 — Change Requests v6.0 ✅ COMPLETE
+## Session: 2026-04-14 — Change Requests v6.0 + Mobile Typography Fix ✅ COMPLETE
 
 ### Status
-- **Current Position:** All 5 CRs Complete
+- **Current Position:** All 5 CRs Complete + Mobile Fix
 - **Build:** ✅ Successful
 
 ### Summary
@@ -20,11 +20,18 @@ Executed all 5 change requests from v6 document:
 - CR4: Fixed Jumbo Loans amount $806,500 → $832,750 (6 occurrences)
 - CR5: Blog posts now open in new tab (`target="_blank"`)
 
-**Files Modified:** 4
+**Additional Fix — Mobile Headline Typography:**
+- Fixed mid-word breaks on mobile (e.g., "Re-quirements", "Bene-fits", "Conven-tional")
+- Changed `hyphens: auto` → `hyphens: none` for all headings
+- Added `text-wrap: balance` for better line distribution
+- Implemented responsive font scaling with `clamp()` for display classes
+
+**Files Modified:** 5
 - `src/components/layout/Footer.tsx` (CR1, CR2, CR3)
 - `src/app/(marketing)/services/services-hub-content.tsx` (CR4)
 - `src/app/(marketing)/services/conventional-loans-houston/conventional-loans-content.tsx` (CR4)
 - `src/app/(marketing)/blog/blog-content.tsx` (CR5)
+- `src/app/globals.css` (Mobile typography fix)
 
 **TypeScript:** ✅ No errors
 
