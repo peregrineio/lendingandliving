@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllSlugs, getRelatedPosts } from '@/lib/blog';
 import { BlogPostContent } from './blog-post-content';
+import { MDXContent } from './mdx-content';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -51,5 +52,9 @@ export default async function BlogPostPage({ params }: Props) {
 
   const relatedPosts = getRelatedPosts(slug, post.category, 3);
 
-  return <BlogPostContent post={post} relatedPosts={relatedPosts} />;
+  return (
+    <BlogPostContent post={post} relatedPosts={relatedPosts}>
+      <MDXContent source={post.content} />
+    </BlogPostContent>
+  );
 }

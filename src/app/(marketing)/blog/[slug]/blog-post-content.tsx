@@ -1,9 +1,8 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, ReactNode } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Calendar, Clock, ArrowLeft, ArrowRight, Phone, User, Tag, List } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { BlogPost, BlogPostMeta, categories } from '@/lib/blog-types';
@@ -11,56 +10,8 @@ import { BlogPost, BlogPostMeta, categories } from '@/lib/blog-types';
 interface BlogPostContentProps {
   post: BlogPost;
   relatedPosts: BlogPostMeta[];
+  children: ReactNode; // MDX content rendered from server component
 }
-
-// Custom MDX components
-const mdxComponents = {
-  h2: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h2 className="font-display text-2xl text-deep-brown mt-10 mb-4" id={String(children).toLowerCase().replace(/\s+/g, '-')} {...props}>
-      {children}
-    </h2>
-  ),
-  h3: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h3 className="font-display text-xl text-deep-brown mt-8 mb-3" {...props}>
-      {children}
-    </h3>
-  ),
-  p: ({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
-    <p className="text-text-muted mb-4 leading-relaxed" {...props}>
-      {children}
-    </p>
-  ),
-  ul: ({ children, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
-    <ul className="list-disc list-inside text-text-muted mb-4 space-y-2 ml-4" {...props}>
-      {children}
-    </ul>
-  ),
-  ol: ({ children, ...props }: React.HTMLAttributes<HTMLOListElement>) => (
-    <ol className="list-decimal list-inside text-text-muted mb-4 space-y-2 ml-4" {...props}>
-      {children}
-    </ol>
-  ),
-  li: ({ children, ...props }: React.HTMLAttributes<HTMLLIElement>) => (
-    <li className="text-text-muted" {...props}>
-      {children}
-    </li>
-  ),
-  a: ({ children, href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-    <a href={href} className="text-gold-accent hover:underline" {...props}>
-      {children}
-    </a>
-  ),
-  blockquote: ({ children, ...props }: React.HTMLAttributes<HTMLQuoteElement>) => (
-    <blockquote className="border-l-4 border-gold-accent pl-4 italic text-text-muted my-6 bg-cream/50 py-3 pr-4 rounded-r-lg" {...props}>
-      {children}
-    </blockquote>
-  ),
-  strong: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <strong className="font-semibold text-deep-brown" {...props}>
-      {children}
-    </strong>
-  ),
-};
 
 function extractHeadings(content: string): { text: string; id: string }[] {
   const headingRegex = /^## (.+)$/gm;
@@ -179,7 +130,7 @@ function MidPostCTA() {
   );
 }
 
-export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
+export function BlogPostContent({ post, relatedPosts, children }: BlogPostContentProps) {
   const { isSpanish } = useLanguage();
   const heroRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true });
@@ -300,9 +251,8 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
                 <article className="bg-white rounded-2xl p-6 md:p-8 border border-brand-border">
                   <TableOfContents headings={headings} />
 
-                  <div className="prose prose-lg max-w-none">
-                    <MDXRemote source={post.content} components={mdxComponents} />
-                  </div>
+                  {/* MDX Content rendered from server component */}
+                  {children}
 
                   <MidPostCTA />
 
