@@ -53,9 +53,9 @@ function LinkedinIcon({ className }: { className?: string }) {
 
 // Social links
 const socialLinks = [
-  { href: 'https://facebook.com', Icon: FacebookIcon, label: 'Facebook' },
-  { href: 'https://instagram.com', Icon: InstagramIcon, label: 'Instagram' },
-  { href: 'https://linkedin.com', Icon: LinkedinIcon, label: 'LinkedIn' },
+  { href: 'https://www.facebook.com/profile.php?id=61564962675638', Icon: FacebookIcon, label: 'Facebook' },
+  { href: 'https://www.instagram.com/lendingandliving/', Icon: InstagramIcon, label: 'Instagram' },
+  { href: 'https://www.linkedin.com/in/daisy-castro-b7a079327/', Icon: LinkedinIcon, label: 'LinkedIn' },
 ];
 
 export function Footer() {
