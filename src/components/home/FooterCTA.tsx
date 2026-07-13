@@ -10,20 +10,42 @@ export function FooterCTA() {
   const [formData, setFormData] = useState({ name: '', phone: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
-    // Simulate submission - will be connected to API later
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: formData.name,
+          phone: formData.phone,
+          bestTime: 'Anytime',
+          purpose: 'Quick Contact — homepage footer CTA',
+          sourcePage: '/',
+          language: isSpanish ? 'es' : 'en',
+        }),
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: '', phone: '' });
+      if (!res.ok) throw new Error('Request failed');
 
-    // Reset success message after 5 seconds
-    setTimeout(() => setIsSubmitted(false), 5000);
+      setIsSubmitted(true);
+      setFormData({ name: '', phone: '' });
+      // Reset success message after 8 seconds
+      setTimeout(() => setIsSubmitted(false), 8000);
+    } catch {
+      setError(
+        isSpanish
+          ? 'Algo salió mal al enviar. Por favor llama directamente al 832-894-7676.'
+          : 'Something went wrong sending that. Please call 832-894-7676 directly.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -129,6 +151,12 @@ export function FooterCTA() {
                   )}
                 </button>
               </form>
+            )}
+
+            {error && (
+              <p className="mt-4 text-sm text-red-300" role="alert">
+                {error}
+              </p>
             )}
 
             {/* Desktop phone */}

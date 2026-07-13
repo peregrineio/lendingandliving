@@ -385,14 +385,49 @@ function ChecklistDownload({ language }: { language: 'en' | 'es' }) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const guideHref =
+    language === 'es'
+      ? '/downloads/homebuyer-guide-es.pdf'
+      : '/downloads/homebuyer-guide-en.pdf';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Placeholder for Supabase integration
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setSubmitted(true);
-    setLoading(false);
+    setError(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: 'Guide Request',
+          // Phone is required by the lead API; the guide form only collects
+          // email, so pass a sentinel that reads clearly in Daisy's email.
+          phone: '0000000000',
+          email,
+          bestTime: 'Anytime',
+          purpose: 'Homebuyer Guide Download (email-only lead)',
+          sourcePage: '/services/first-time-homebuyer-houston',
+          language,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Request failed');
+
+      setSubmitted(true);
+      // Deliver the guide immediately — no email dependency.
+      window.open(guideHref, '_blank', 'noopener');
+    } catch {
+      setError(
+        language === 'es'
+          ? 'Algo salió mal. Descarga la guía directamente abajo.'
+          : 'Something went wrong. Download the guide directly below.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -400,12 +435,15 @@ function ChecklistDownload({ language }: { language: 'en' | 'es' }) {
       <div className="text-center p-6 bg-green-50 rounded-xl border border-green-200">
         <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
         <h4 className="font-display text-lg text-deep-brown mb-2">
-          {language === 'es' ? '¡Revisa Tu Email!' : 'Check Your Email!'}
+          {language === 'es' ? '¡Aquí Está Tu Guía!' : "Here's Your Guide!"}
         </h4>
         <p className="text-sm text-text-muted">
           {language === 'es'
-            ? 'Tu guía de comprador primerizo está en camino.'
-            : 'Your first-time homebuyer guide is on its way.'}
+            ? 'Tu descarga comenzó. ¿No la ves?'
+            : "Your download just started. Don't see it?"}{' '}
+          <a href={guideHref} target="_blank" rel="noopener" className="text-gold-accent underline font-medium">
+            {language === 'es' ? 'Descargar de nuevo' : 'Download again'}
+          </a>
         </p>
       </div>
     );
@@ -440,6 +478,14 @@ function ChecklistDownload({ language }: { language: 'en' | 'es' }) {
           </>
         )}
       </button>
+      {error && (
+        <p className="text-sm text-red-600 text-center" role="alert">
+          {error}{' '}
+          <a href={guideHref} target="_blank" rel="noopener" className="underline font-medium">
+            {language === 'es' ? 'Abrir la guía' : 'Open the guide'}
+          </a>
+        </p>
+      )}
       <p className="text-xs text-text-muted text-center">
         {language === 'es'
           ? 'Sin spam. Solo recursos útiles para tu viaje de compra de casa.'

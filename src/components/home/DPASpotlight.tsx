@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 // Stat data
@@ -19,11 +19,42 @@ export function DPASpotlight() {
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   const [formData, setFormData] = useState({ name: '', phone: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission - will be connected to API later
-    console.log('DPA Quick Form:', formData);
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: formData.name,
+          phone: formData.phone,
+          bestTime: 'Anytime',
+          purpose: 'DPA Eligibility Check — homepage',
+          sourcePage: '/',
+          language: isSpanish ? 'es' : 'en',
+        }),
+      });
+
+      if (!res.ok) throw new Error('Request failed');
+
+      setIsSubmitted(true);
+      setFormData({ name: '', phone: '' });
+    } catch {
+      setError(
+        isSpanish
+          ? 'Algo salió mal al enviar. Por favor llama al 832-894-7676.'
+          : 'Something went wrong sending that. Please call 832-894-7676.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -108,6 +139,19 @@ export function DPASpotlight() {
                   : 'Fill out the quick form and we\'ll be in touch.'}
               </p>
 
+              {isSubmitted ? (
+                <div className="text-center p-6 bg-green-50 rounded-xl border border-green-200" role="status">
+                  <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
+                  <h4 className="font-display text-lg text-deep-brown mb-2">
+                    {isSpanish ? '¡Recibido!' : 'Got it!'}
+                  </h4>
+                  <p className="text-sm text-text-muted">
+                    {isSpanish
+                      ? 'Daisy te contactará dentro de 24 horas.'
+                      : 'Daisy will reach out within 24 hours.'}
+                  </p>
+                </div>
+              ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="dpa-name" className="sr-only">
@@ -121,6 +165,7 @@ export function DPASpotlight() {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 rounded-lg border border-brand-border bg-white text-text-body placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-gold-accent focus:border-transparent transition-all"
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div>
@@ -135,12 +180,23 @@ export function DPASpotlight() {
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-4 py-3 rounded-lg border border-brand-border bg-white text-text-body placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-gold-accent focus:border-transparent transition-all"
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
-                <button type="submit" className="btn-primary w-full">
-                  {t('dpa.cta')}
+                <button type="submit" className="btn-primary w-full" disabled={isSubmitting}>
+                  {isSubmitting
+                    ? isSpanish
+                      ? 'Enviando...'
+                      : 'Sending...'
+                    : t('dpa.cta')}
                 </button>
+                {error && (
+                  <p className="text-sm text-red-600" role="alert">
+                    {error}
+                  </p>
+                )}
               </form>
+              )}
 
               <p className="text-xs text-text-muted mt-4 text-center">
                 {isSpanish
