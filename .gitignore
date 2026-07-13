@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# client working files — not site content
+daisysrequestedblogs/
+public/new changes/
