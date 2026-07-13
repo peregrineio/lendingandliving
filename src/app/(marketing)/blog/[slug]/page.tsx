@@ -1,4 +1,7 @@
 import { Metadata } from 'next';
+
+// Hourly ISR — future-dated posts render on demand once their date passes.
+export const revalidate = 3600;
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllSlugs, getRelatedPosts } from '@/lib/blog';
 import { BlogPostContent } from './blog-post-content';

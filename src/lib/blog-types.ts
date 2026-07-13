@@ -38,6 +38,21 @@ export const blogImages: Record<string, string> = {
   'gift-of-equity-explained': '/images/blog/family-gift-equity.jpg',
   'what-not-to-do-before-buying-home': '/images/blog/mortgage-caution.jpg',
   'surprising-things-that-lower-credit-score': '/images/blog/credit-score-new.jpg',
+  // July 2026 batch (Daisy's requested posts) — images reused from the
+  // existing library; unique art can be swapped in per-slug later.
+  'how-much-house-can-i-afford-texas': '/images/blog/couple-home-search.jpg',
+  'texas-first-time-buyer-programs': '/images/blog/first-time-homebuyer.jpg',
+  'credit-score-needed-to-buy-house-texas': '/images/blog/credit-score.jpg',
+  'prequalification-vs-preapproval-texas': '/images/blog/mortgage-caution.jpg',
+  'offer-accepted-to-closing-texas': '/images/blog/closing-keys.jpg',
+  'how-long-to-close-house-texas': '/images/blog/closing-keys.jpg',
+  'fha-vs-conventional-texas': '/images/blog/couple-home-search.jpg',
+  'va-loan-texas-guide': '/images/blog/hispanic-family-new-home.jpg',
+  'buy-now-or-wait-texas': '/images/blog/mortgage-caution.jpg',
+  'self-employed-mortgage-texas': '/images/blog/first-time-homebuyer.jpg',
+  'tax-deductions-add-backs-self-employed-mortgage': '/images/blog/credit-score-new.jpg',
+  'non-occupant-co-borrower-texas': '/images/blog/family-gift-equity.jpg',
+  'job-loss-mortgage-options-texas': '/images/blog/mortgage-caution.jpg',
 }
 
 export const categories = [

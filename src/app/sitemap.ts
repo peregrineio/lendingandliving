@@ -1,6 +1,9 @@
 import { MetadataRoute } from 'next';
 import { getAllSlugs } from '@/lib/blog';
 
+
+// Hourly regeneration so drip-published posts enter the sitemap on schedule.
+export const revalidate = 3600;
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://lendingandliving.com';
 

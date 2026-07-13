@@ -1,4 +1,7 @@
 import { Metadata } from 'next';
+
+// Hourly ISR — makes drip-scheduled posts appear without a redeploy.
+export const revalidate = 3600;
 import { BlogContent } from './blog-content';
 import { getAllPosts } from '@/lib/blog';
 
