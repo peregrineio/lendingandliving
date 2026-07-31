@@ -46,8 +46,15 @@ export async function POST(request: NextRequest) {
       await sendLeadAutoReply(data);
     }
 
-    // Log for development
-    console.log('New contact form submission:', data);
+    // COMPLIANCE: never log lead PII (phone, email, message) to server logs.
+    // Vercel logs are retained and broadly accessible; GLBA safeguards + TDPSA
+    // data-minimization both cut against it. Log non-identifying metadata only.
+    console.log('New contact form submission', {
+      purpose: data.purpose,
+      sourcePage: data.sourcePage,
+      language: data.language,
+      hasEmail: Boolean(data.email),
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

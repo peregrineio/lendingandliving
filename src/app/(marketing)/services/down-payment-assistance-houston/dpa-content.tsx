@@ -108,7 +108,7 @@ const faqData = {
   en: [
     {
       question: 'What is down payment assistance?',
-      answer: 'Down payment assistance (DPA) programs provide grants, forgivable loans, or low-interest loans to help homebuyers cover their down payment and closing costs. In Houston, these programs can provide up to $40,000 in assistance.',
+      answer: 'Down payment assistance (DPA) programs provide grants, forgivable loans, or low-interest loans to help homebuyers cover their down payment and closing costs. In the Houston area, assistance amounts vary widely by program — from a few thousand dollars to $50,000 or more through certain City of Houston programs. Amounts, income limits, and funding availability are set by each program administrator and change over time. (Information as of July 2026.)',
     },
     {
       question: 'Do I have to be a first-time homebuyer to qualify?',
@@ -142,7 +142,7 @@ const faqData = {
   es: [
     {
       question: '¿Qué es la ayuda para el enganche?',
-      answer: 'Los programas de ayuda para el enganche (DPA) proporcionan subvenciones, préstamos perdonables o préstamos de bajo interés para ayudar a los compradores a cubrir su enganche y costos de cierre. En Houston, estos programas pueden proporcionar hasta $40,000 en asistencia.',
+      answer: 'Los programas de ayuda para el enganche (DPA) proporcionan subvenciones, préstamos perdonables o préstamos de bajo interés para ayudar a los compradores a cubrir su enganche y costos de cierre. En el área de Houston, los montos de asistencia varían mucho según el programa — desde unos pocos miles de dólares hasta $50,000 o más mediante ciertos programas de la Ciudad de Houston. Los montos, límites de ingresos y disponibilidad de fondos los establece cada administrador del programa y cambian con el tiempo. (Información vigente a julio de 2026.)',
     },
     {
       question: '¿Tengo que ser comprador primerizo para calificar?',
@@ -298,8 +298,8 @@ export function DPAContent() {
                 </p>
                 <p className="text-text-muted text-sm mt-2">
                   {isSpanish
-                    ? 'Hasta $40,000 en asistencia disponible'
-                    : 'Up to $40,000 in assistance available'}
+                    ? 'Más de 10 programas en el área de Houston — los montos varían según el programa'
+                    : '10+ programs across the Houston area — amounts vary by program'}
                 </p>
               </motion.div>
 
@@ -348,12 +348,13 @@ export function DPAContent() {
                         a cubrir tu enganche y costos de cierre cuando compras una casa.
                       </p>
                       <p>
-                        En Houston, hay más de 10 programas DPA disponibles que pueden proporcionar desde
-                        $10,000 hasta $40,000 en asistencia. La mayoría de los compradores de Houston
-                        califican para al menos un programa — pero no lo saben.
+                        En el área de Houston hay más de 10 programas DPA. Los montos varían mucho —
+                        desde unos pocos miles de dólares hasta $50,000 o más mediante ciertos programas
+                        de la Ciudad de Houston. La mayoría de los compradores nunca se entera de que
+                        estos programas existen.
                       </p>
                       <p className="font-semibold text-deep-brown">
-                        Daisy se especializa en encontrar cada dólar de asistencia para el que calificas.
+                        Daisy revisa qué programas podrían aplicar a su situación.
                       </p>
                     </>
                   ) : (
@@ -363,12 +364,12 @@ export function DPAContent() {
                         down payment and closing costs when buying a home.
                       </p>
                       <p>
-                        In Houston, there are over 10 DPA programs available that can provide anywhere
-                        from $10,000 to $40,000 in assistance. Most Houston buyers qualify for at least
-                        one program — but they don&apos;t know it.
+                        There are 10+ DPA programs across the Houston area. Amounts vary widely — from a
+                        few thousand dollars up to $50,000 or more through certain City of Houston
+                        programs. Most buyers never find out these programs exist.
                       </p>
                       <p className="font-semibold text-deep-brown">
-                        Daisy specializes in finding every dollar of assistance you qualify for.
+                        Daisy will walk through which programs may apply to your situation.
                       </p>
                     </>
                   )}
@@ -383,8 +384,8 @@ export function DPAContent() {
                 {[
                   {
                     icon: DollarSign,
-                    value: '$40K+',
-                    label: isSpanish ? 'Máxima Asistencia' : 'Max Assistance',
+                    value: '$50K+',
+                    label: isSpanish ? 'Asistencia Máxima*' : 'Max Assistance*',
                   },
                   {
                     icon: Building,
@@ -413,6 +414,13 @@ export function DPAContent() {
                     <p className="text-sm text-text-muted">{stat.label}</p>
                   </div>
                 ))}
+                {/* COMPLIANCE: substantiation + no-government-affiliation disclaimer.
+                    Reg N § 1014.3(14),(15); Tex. DTPA. Do not remove. */}
+                <p className="col-span-2 text-xs text-text-muted leading-relaxed">
+                  {isSpanish
+                    ? '*Los montos de asistencia varían según el programa, sus ingresos, el tamaño de su hogar y dónde compra. Las cifras que se muestran reflejan programas del área de Houston vigentes a julio de 2026 y están sujetas a cambios y a la disponibilidad de fondos. Estos programas son administrados por agencias gubernamentales y organizaciones de vivienda; no estamos afiliados ni respaldados por ninguna agencia gubernamental. Esto no es un compromiso de préstamo. La elegibilidad final la determina el administrador del programa y el prestamista.'
+                    : '*Assistance amounts vary by program, your income, household size, and where you buy. Figures shown reflect Houston-area programs as of July 2026 and are subject to change and funding availability. These programs are administered by government agencies and housing organizations; we are not affiliated with or endorsed by any government agency. This is not a commitment to lend. Final eligibility is determined by the program administrator and the lender.'}
+                </p>
               </motion.div>
             </div>
           </div>
