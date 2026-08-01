@@ -47,31 +47,96 @@ export interface Lead {
   status?: string;
 }
 
-// Lead management functions
-export async function insertLead(lead: Omit<Lead, 'id' | 'created_at'>): Promise<{ success: boolean; error?: string }> {
-  const admin = getSupabaseAdmin();
+// Map the form's purpose string to the platform's loan_interest enum
+function purposeToInterest(purpose?: string | null): string {
+  const p = (purpose ?? '').toLowerCase();
+  if (p.includes('dpa') || p.includes('elegibilidad')) return 'dpa';
+  if (p.includes('itin')) return 'itin';
+  if (p.includes('refi')) return 'refinance';
+  if (p.includes('buy') || p.includes('home') || p.includes('comprar') || p.includes('casa')) return 'purchase';
+  return 'unknown';
+}
 
-  if (!admin) {
-    console.warn('Supabase admin client not configured - lead not saved to database');
-    return { success: true }; // Don't fail if Supabase isn't configured
+export interface WebsiteConsentPayload {
+  granted: boolean;
+  disclosureVersion: string;
+  disclosureText: string;
+  sourceUrl?: string | null;
+  ip?: string | null;
+  userAgent?: string | null;
+}
+
+/**
+ * Writes the lead into the SHARED platform Supabase project (contacts +
+ * consents + interactions) using the ANON key — inserts are allowed by
+ * narrow RLS policies (lead_provenance='website_form' only); anon can never
+ * read anything back. No service-role key needed on the website.
+ */
+export async function insertLead(
+  lead: Omit<Lead, 'id' | 'created_at'>,
+  consent?: WebsiteConsentPayload
+): Promise<{ success: boolean; error?: string }> {
+  const client = getSupabaseClient();
+
+  if (!client) {
+    console.warn('Supabase client not configured - lead not saved to database');
+    return { success: true }; // Don't fail the form if Supabase isn't configured
   }
 
-  const { error } = await admin.from('leads').insert({
-    first_name: lead.first_name,
-    phone: lead.phone,
-    email: lead.email || null,
-    best_time: lead.best_time || null,
-    purpose: lead.purpose || null,
-    message: lead.message || null,
-    source_page: lead.source_page || null,
-    language: lead.language || 'en',
-    status: 'new',
-  });
+  const notesParts = [
+    lead.message ? `Message: ${lead.message}` : null,
+    lead.purpose ? `Purpose: ${lead.purpose}` : null,
+    lead.best_time ? `Best time to call: ${lead.best_time}` : null,
+  ].filter(Boolean);
 
-  if (error) {
+  const { data: contact, error } = await client
+    .from('contacts')
+    .insert({
+      first_name: lead.first_name,
+      phone: lead.phone,
+      email: lead.email || null,
+      language_preference: lead.language === 'es' ? 'es' : 'en',
+      segment: 'new_lead',
+      loan_interest: purposeToInterest(lead.purpose),
+      lead_source: 'website',
+      lead_provenance: 'website_form',
+      source_page: lead.source_page || null,
+      data_class: 'tdpsa',
+      notes: notesParts.length ? notesParts.join('\n') : null,
+    })
+    .select('id')
+    .single();
+
+  if (error || !contact) {
     console.error('Supabase insert error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: error?.message };
   }
+
+  // Consent rows only when the box was checked — an unconsented lead is
+  // captured but has NO consent row (visibly distinguishable, not contactable).
+  if (consent?.granted) {
+    for (const channel of ['email', 'sms'] as const) {
+      const { error: consentError } = await client.from('consents').insert({
+        contact_id: contact.id,
+        channel,
+        status: 'granted',
+        disclosure_version: consent.disclosureVersion,
+        disclosure_text_snapshot: consent.disclosureText,
+        source_url: consent.sourceUrl ?? null,
+        ip_address: consent.ip ?? null,
+        user_agent: consent.userAgent ?? null,
+      });
+      if (consentError) console.error(`Supabase ${channel} consent insert error:`, consentError);
+    }
+  }
+
+  const { error: interactionError } = await client.from('interactions').insert({
+    contact_id: contact.id,
+    type: 'form_submission',
+    summary: `Website form submission (${lead.source_page ?? 'unknown page'})`,
+    created_by: 'website',
+  });
+  if (interactionError) console.error('Supabase interaction insert error:', interactionError);
 
   return { success: true };
 }

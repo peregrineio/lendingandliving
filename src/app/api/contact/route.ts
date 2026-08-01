@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { insertLead } from '@/lib/supabase';
 import { sendLeadNotification, sendLeadAutoReply } from '@/lib/email';
+import { DISCLOSURE_TEXT, DISCLOSURE_VERSION } from '@/lib/consent-disclosure';
 
 const contactSchema = z.object({
   firstName: z.string().min(1),
@@ -11,7 +12,9 @@ const contactSchema = z.object({
   purpose: z.string().min(1),
   message: z.string().optional(),
   sourcePage: z.string().optional(),
+  sourceUrl: z.string().optional(),
   language: z.string().optional(),
+  consent: z.boolean().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -21,17 +24,32 @@ export async function POST(request: NextRequest) {
     // Validate input
     const data = contactSchema.parse(body);
 
-    // Save to Supabase
-    const result = await insertLead({
-      first_name: data.firstName,
-      phone: data.phone,
-      email: data.email || null,
-      best_time: data.bestTime,
-      purpose: data.purpose,
-      message: data.message || null,
-      source_page: data.sourcePage || null,
-      language: data.language || 'en',
-    });
+    // Save to the shared platform Supabase (contacts + consents + timeline)
+    const lang = data.language === 'es' ? 'es' : 'en';
+    const result = await insertLead(
+      {
+        first_name: data.firstName,
+        phone: data.phone,
+        email: data.email || null,
+        best_time: data.bestTime,
+        purpose: data.purpose,
+        message: data.message || null,
+        source_page: data.sourcePage || null,
+        language: lang,
+      },
+      {
+        granted: Boolean(data.consent),
+        disclosureVersion: DISCLOSURE_VERSION,
+        // Snapshot the EXACT text the consumer saw, in their language.
+        disclosureText: DISCLOSURE_TEXT[lang as 'en' | 'es'],
+        sourceUrl: data.sourceUrl || null,
+        ip:
+          request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+          request.headers.get('x-real-ip') ||
+          null,
+        userAgent: request.headers.get('user-agent'),
+      }
+    );
 
     if (!result.success) {
       console.error('Failed to save lead:', result.error);

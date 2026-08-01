@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useLanguage } from '@/context/LanguageContext';
 import { Loader2, CheckCircle, Send } from 'lucide-react';
 import { trackFormSubmit } from '@/lib/analytics';
+import { DISCLOSURE_TEXT } from '@/lib/consent-disclosure';
 
 const contactSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -15,6 +16,9 @@ const contactSchema = z.object({
   bestTime: z.string().min(1, 'Please select a time'),
   purpose: z.string().min(1, 'Please select a purpose'),
   message: z.string().optional(),
+  // Unchecked by default and NOT required — an unconsented lead is still
+  // captured, it is simply not contactable until consent exists (TCPA/SB 140).
+  consent: z.boolean().optional(),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -54,8 +58,10 @@ export function ContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...data,
+          consent: Boolean(data.consent),
           language: language,
           sourcePage: typeof window !== 'undefined' ? window.location.pathname : undefined,
+          sourceUrl: typeof window !== 'undefined' ? window.location.href : undefined,
         }),
       });
 
@@ -182,6 +188,25 @@ export function ContactForm() {
           className="w-full px-4 py-3 rounded-lg border border-brand-border bg-white focus:border-gold-accent focus:ring-2 focus:ring-gold-accent/20 outline-none transition-all resize-none"
           placeholder={isSpanish ? 'Cuéntame más sobre tu situación...' : 'Tell me more about your situation...'}
         />
+      </div>
+
+      {/* TCPA/SB 140 consent — unchecked by default, never pre-checked */}
+      <div className="rounded-lg border border-brand-border bg-cream/50 p-4">
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            {...register('consent')}
+            className="mt-1 h-4 w-4 shrink-0 accent-gold-accent"
+          />
+          <span className="text-xs leading-relaxed text-text-muted">
+            {DISCLOSURE_TEXT[language as 'en' | 'es'] ?? DISCLOSURE_TEXT.en}
+          </span>
+        </label>
+        <p className="mt-2 pl-7 text-[11px] text-text-muted/80">
+          {isSpanish
+            ? 'Opcional — puedes enviar tu consulta sin marcar la casilla y Daisy no te contactará por canales de marketing.'
+            : 'Optional — you can send your inquiry without checking the box; Daisy will not contact you through marketing channels.'}
+        </p>
       </div>
 
       {error && (
