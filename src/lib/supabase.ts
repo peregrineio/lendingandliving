@@ -89,9 +89,13 @@ export async function insertLead(
     lead.best_time ? `Best time to call: ${lead.best_time}` : null,
   ].filter(Boolean);
 
-  const { data: contact, error } = await client
+  // Pre-generate the id: anon has INSERT-only policies (no SELECT), so
+  // `insert().select()` would violate RLS on the RETURNING step.
+  const contactId = crypto.randomUUID();
+  const { error } = await client
     .from('contacts')
     .insert({
+      id: contactId,
       first_name: lead.first_name,
       phone: lead.phone,
       email: lead.email || null,
@@ -103,13 +107,11 @@ export async function insertLead(
       source_page: lead.source_page || null,
       data_class: 'tdpsa',
       notes: notesParts.length ? notesParts.join('\n') : null,
-    })
-    .select('id')
-    .single();
+    });
 
-  if (error || !contact) {
+  if (error) {
     console.error('Supabase insert error:', error);
-    return { success: false, error: error?.message };
+    return { success: false, error: error.message };
   }
 
   // Consent rows only when the box was checked — an unconsented lead is
@@ -117,7 +119,7 @@ export async function insertLead(
   if (consent?.granted) {
     for (const channel of ['email', 'sms'] as const) {
       const { error: consentError } = await client.from('consents').insert({
-        contact_id: contact.id,
+        contact_id: contactId,
         channel,
         status: 'granted',
         disclosure_version: consent.disclosureVersion,
@@ -131,7 +133,7 @@ export async function insertLead(
   }
 
   const { error: interactionError } = await client.from('interactions').insert({
-    contact_id: contact.id,
+    contact_id: contactId,
     type: 'form_submission',
     summary: `Website form submission (${lead.source_page ?? 'unknown page'})`,
     created_by: 'website',
